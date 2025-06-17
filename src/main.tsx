@@ -14,7 +14,6 @@ import { Amplify } from 'aws-amplify';
 export const system = createSystem(defaultConfig, config);
 
 Amplify.configure(awsConfig);
-console.log(awsConfig);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

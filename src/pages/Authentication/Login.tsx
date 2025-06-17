@@ -8,6 +8,7 @@ import {
   Link,
   Stack,
   Text,
+  Image,
 } from '@chakra-ui/react';
 import { PasswordInput } from '@/components/ui/password-input';
 import { LuLock, LuMail } from 'react-icons/lu';
@@ -20,7 +21,14 @@ export const Login = () => {
     useAuthentication();
 
   return (
-    <Stack gap="2rem" maxWidth="360px" width="full">
+    <Stack gap="2rem" maxWidth="360px" width="full" id="login-container">
+      <Image
+        src="/src/assets/Joblee.png"
+        alt="Joblee"
+        width="100%"
+        objectFit="contain"
+        height="70px"
+      />
       <Stack gap="0rem">
         <Text fontSize="3xl" fontWeight="bold" lineHeight="1.2">
           Olá,

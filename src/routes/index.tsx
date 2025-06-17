@@ -1,15 +1,13 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { routes } from '@/routes/routes';
 import { Authentication } from '@/pages/Authentication/Authentication';
 import { publicRoutes } from './publicRoutes';
 import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { type ReactNode } from 'react';
 import '@/App.css';
 
-export const PageRoutes = () => {
-  const navigate = useNavigate();
+const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { getStorage } = useStorage();
 
   const checkLogged = () => {
@@ -17,14 +15,23 @@ export const PageRoutes = () => {
     return !!token;
   };
 
-  useEffect(() => {
-    const logged = checkLogged();
-    if (logged) {
-      navigate('/');
-      return;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  if (!checkLogged()) return <Navigate to="/login" replace />;
+
+  return children;
+};
+
+export const AppRoutes = () => {
+  // const navigate = useNavigate();
+  // const { getStorage } = useStorage();
+
+  // useEffect(() => {
+  //   const logged = checkLogged();
+  //   if (logged) {
+  //     navigate('/');
+  //     return;
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <Routes>
@@ -45,9 +52,11 @@ export const PageRoutes = () => {
           key={route.name}
           path={route.path}
           element={
-            <Layout>
-              <route.component />
-            </Layout>
+            <PrivateRoute>
+              <Layout>
+                <route.component />
+              </Layout>
+            </PrivateRoute>
           }
         />
       ))}

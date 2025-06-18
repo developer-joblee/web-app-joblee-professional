@@ -5,8 +5,9 @@ import { publicRoutes } from './publicRoutes';
 import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { type ReactNode } from 'react';
-import { PWAUpdatePrompt } from '@/components/pwa-update-prompt';
+import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
 import '@/App.css';
+import { PWAInstallButton } from '@/components/ui/pwa-install-button';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { getStorage } = useStorage();
@@ -35,6 +36,7 @@ export const AppRoutes = () => {
         onUpdateAvailable={handleUpdateAvailable}
         onUpdateApplied={handleUpdateApplied}
       />
+      <PWAInstallButton />
       <Routes>
         {publicRoutes.map((route) => (
           <Route

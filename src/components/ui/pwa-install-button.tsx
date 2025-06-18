@@ -23,7 +23,7 @@ export const PWAInstallButton = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      const shouldShow = !isInstalled && isInstallable;
+      const shouldShow = isInstalled || !isInstallable ? false : true;
       setCanShowModal(shouldShow);
     }, 5000);
   }, []);
@@ -69,5 +69,15 @@ export const PWAInstallButton = () => {
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
+    // <Flex
+    //   display={isInstalled || !isInstallable ? 'none' : 'flex'}
+    //   position="fixed"
+    //   bottom="20px"
+    //   right="20px"
+    // >
+    //   <Button onClick={handleInstall}>
+    //     Instalar Joblee <LuArrowDownToLine />
+    //   </Button>
+    // </Flex>
   );
 };

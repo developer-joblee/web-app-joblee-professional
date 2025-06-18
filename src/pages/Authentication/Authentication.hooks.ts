@@ -12,6 +12,7 @@ export const useAuthentication = () => {
     password: false,
     confirmPassword: false,
     fullName: false,
+    code: false,
   });
 
   return {

@@ -28,7 +28,7 @@ type ConfirmCredentials = UserCredentials & {
   code: string;
 };
 
-type RegisterCredentials = UserCredentials & {
+type RegisterCredentials = ConfirmCredentials & {
   fullName: string;
   userId: string;
 };
@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       password: '',
       fullName: '',
       userId: '',
+      code: '',
     });
 
   const handleError = (error: Error, message: string) => {

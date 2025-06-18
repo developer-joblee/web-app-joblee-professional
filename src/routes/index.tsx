@@ -5,6 +5,7 @@ import { publicRoutes } from './publicRoutes';
 import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { type ReactNode } from 'react';
+import { PWAUpdatePrompt } from '@/components/pwa-update-prompt';
 import '@/App.css';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
@@ -21,45 +22,46 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 };
 
 export const AppRoutes = () => {
-  // const navigate = useNavigate();
-  // const { getStorage } = useStorage();
+  const handleUpdateAvailable = () => {
+    console.log('PWA update available');
+  };
 
-  // useEffect(() => {
-  //   const logged = checkLogged();
-  //   if (logged) {
-  //     navigate('/');
-  //     return;
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
+  const handleUpdateApplied = () => {
+    console.log('PWA update applied');
+  };
   return (
-    <Routes>
-      {publicRoutes.map((route) => (
-        <Route
-          key={route.name}
-          path={route.path}
-          element={
-            <Authentication>
-              <route.component />
-            </Authentication>
-          }
-        />
-      ))}
-
-      {routes.map((route) => (
-        <Route
-          key={route.name}
-          path={route.path}
-          element={
-            <PrivateRoute>
-              <Layout>
+    <>
+      <PWAUpdatePrompt
+        onUpdateAvailable={handleUpdateAvailable}
+        onUpdateApplied={handleUpdateApplied}
+      />
+      <Routes>
+        {publicRoutes.map((route) => (
+          <Route
+            key={route.name}
+            path={route.path}
+            element={
+              <Authentication>
                 <route.component />
-              </Layout>
-            </PrivateRoute>
-          }
-        />
-      ))}
-    </Routes>
+              </Authentication>
+            }
+          />
+        ))}
+
+        {routes.map((route) => (
+          <Route
+            key={route.name}
+            path={route.path}
+            element={
+              <PrivateRoute>
+                <Layout>
+                  <route.component />
+                </Layout>
+              </PrivateRoute>
+            }
+          />
+        ))}
+      </Routes>
+    </>
   );
 };

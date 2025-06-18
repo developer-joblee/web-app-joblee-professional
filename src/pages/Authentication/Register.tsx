@@ -4,10 +4,9 @@ import {
   Field,
   Flex,
   Input,
-  InputGroup,
-  Link,
   Stack,
   Text,
+  InputGroup,
 } from '@chakra-ui/react';
 import { PasswordInput } from '@/components/ui/password-input';
 import { LuLock, LuMail, LuUser } from 'react-icons/lu';
@@ -135,18 +134,18 @@ export const Register = () => {
           <Checkbox.Root>
             <Checkbox.HiddenInput />
             <Checkbox.Control />
-            <Checkbox.Label>
-              Li e aceito os{' '}
-              <Link
+            <Flex alignItems="center" gap="0.25rem">
+              <Checkbox.Label>Li e aceito os</Checkbox.Label>
+              <Button
                 variant="plain"
-                href="#forgot-password"
+                padding="0"
                 color={defaultColor[900]}
                 fontSize="sx"
                 onClick={() => navigate('/code-verify')}
               >
                 termos e condições de uso
-              </Link>
-            </Checkbox.Label>
+              </Button>
+            </Flex>
           </Checkbox.Root>
         </Flex>
       </Stack>
@@ -154,14 +153,15 @@ export const Register = () => {
       <Button onClick={() => handleSignUp(cachedCredentials)}>Cadastrar</Button>
       <Flex justifyContent="center" alignItems="center" gap="0.5rem">
         <Text fontSize="sm">Já possui uma conta?</Text>
-        <Link
-          href=""
+        <Button
+          variant="plain"
+          padding="0"
           color={defaultColor[900]}
           fontSize="sm"
           onClick={() => navigate('/login')}
         >
           Entrar
-        </Link>
+        </Button>
       </Flex>
     </Stack>
   );

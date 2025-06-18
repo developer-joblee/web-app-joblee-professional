@@ -5,7 +5,6 @@ import {
   Flex,
   Input,
   InputGroup,
-  Link,
   Stack,
   Text,
   Image,
@@ -93,29 +92,32 @@ export const Login = () => {
             <Checkbox.Control />
             <Checkbox.Label>Lembre-se de mim</Checkbox.Label>
           </Checkbox.Root>
-          <Link
+          <Button
             variant="plain"
-            href="#forgot-password"
+            height="auto"
+            padding="0"
             color={defaultColor[900]}
             fontSize="sm"
             onClick={() => navigate('/code-verify')}
           >
             Esqueceu sua senha?
-          </Link>
+          </Button>
         </Flex>
       </Stack>
 
       <Button>Entrar</Button>
       <Flex justifyContent="center" alignItems="center" gap="0.5rem">
         <Text fontSize="sm">Ainda não tem uma conta?</Text>
-        <Link
-          href=""
+        <Button
+          variant="plain"
+          height="auto"
+          padding="0"
           color={defaultColor[900]}
           fontSize="sm"
           onClick={() => navigate('/register')}
         >
           Cadastre-se
-        </Link>
+        </Button>
       </Flex>
     </Stack>
   );

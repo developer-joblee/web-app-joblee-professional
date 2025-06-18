@@ -30,14 +30,12 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<string | null>(null);
 
-  // Check if app is running in standalone mode
   const isStandalone =
     typeof window !== 'undefined' &&
     (window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true ||
       document.referrer.includes('android-app://'));
 
-  // Detect platform
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -62,7 +60,6 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       const promptEvent = e as BeforeInstallPromptEvent;

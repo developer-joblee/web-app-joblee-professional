@@ -3,19 +3,24 @@ import { Button, Flex } from '@chakra-ui/react';
 import { LuArrowDownToLine } from 'react-icons/lu';
 
 export const PWAInstallButton = () => {
-  const { showInstallPrompt } = usePWAInstall();
+  const { isInstalled, isInstallable, showInstallPrompt } = usePWAInstall();
 
   const handleInstall = async () => {
     const result = await showInstallPrompt();
     if (result) {
-      console.log('Aplicativo instalado com sucesso!');
+      alert('Aplicativo instalado com sucesso!');
     } else {
-      console.log('Instalação cancelada ou falhou.');
+      alert('Instalação cancelada ou falhou.');
     }
   };
 
   return (
-    <Flex position="fixed" bottom="20px" right="20px">
+    <Flex
+      display={isInstalled || !isInstallable ? 'none' : 'flex'}
+      position="fixed"
+      bottom="20px"
+      right="20px"
+    >
       <Button onClick={handleInstall}>
         Instalar Joblee <LuArrowDownToLine />
       </Button>

@@ -4,7 +4,7 @@ import { Authentication } from '@/pages/Authentication/Authentication';
 import { publicRoutes } from './publicRoutes';
 import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
 import '@/App.css';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
@@ -30,6 +30,23 @@ export const AppRoutes = () => {
   const handleUpdateApplied = () => {
     console.log('PWA update applied');
   };
+
+  useEffect(() => {
+    const preventDoubleTapZoom = (e: TouchEvent) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('touchstart', preventDoubleTapZoom, {
+      passive: false,
+    });
+
+    return () => {
+      document.removeEventListener('touchstart', preventDoubleTapZoom);
+    };
+  }, []);
+
   return (
     <>
       <PWAUpdatePrompt

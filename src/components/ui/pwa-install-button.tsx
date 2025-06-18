@@ -1,25 +1,24 @@
 import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { Button, Flex } from '@chakra-ui/react';
+import { LuArrowDownToLine } from 'react-icons/lu';
 
 export const PWAInstallButton = () => {
-  const { canInstall, isInstalled, platform, showInstallPrompt } =
-    usePWAInstall();
+  const { showInstallPrompt } = usePWAInstall();
 
   const handleInstall = async () => {
     const result = await showInstallPrompt();
     if (result) {
-      alert('Aplicativo instalado com sucesso!');
+      console.log('Aplicativo instalado com sucesso!');
     } else {
-      alert('Instalação cancelada ou falhou.');
+      console.log('Instalação cancelada ou falhou.');
     }
   };
 
-  if (isInstalled) {
-    return <p>App já está instalado no seu dispositivo ({platform}).</p>;
-  }
-
-  if (!canInstall) {
-    return <p>Este app não pode ser instalado agora.</p>;
-  }
-
-  return <button onClick={handleInstall}>Instalar App</button>;
+  return (
+    <Flex position="fixed" bottom="20px" right="20px">
+      <Button onClick={handleInstall}>
+        Instalar Joblee <LuArrowDownToLine />
+      </Button>
+    </Flex>
+  );
 };

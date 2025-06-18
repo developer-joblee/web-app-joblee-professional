@@ -2,15 +2,15 @@ const useStorage = () => {
   const prefix = 'joblee';
 
   const setStorage = (key: string, value: string) => {
-    sessionStorage.setItem(`${prefix}:${key}`, value);
+    localStorage.setItem(`${prefix}:${key}`, value);
   };
 
   const getStorage = (key: string) => {
-    return sessionStorage.getItem(`${prefix}:${key}`) || '';
+    return localStorage.getItem(`${prefix}:${key}`) || '';
   };
 
   const removeKeyStorage = (key: string) => {
-    sessionStorage.removeItem(`${prefix}:${key}`);
+    localStorage.removeItem(`${prefix}:${key}`);
   };
 
   return {

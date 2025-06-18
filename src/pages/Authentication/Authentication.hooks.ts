@@ -5,7 +5,16 @@ import { useAuth } from '@/hooks/useAuth';
 export const useAuthentication = () => {
   const navigate = useNavigate();
   const [confirmPassword, setConfirmPassword] = useState('');
-  const { cachedCredentials, setCachedCredentials, handleSignUp } = useAuth();
+  const {
+    signInLoading,
+    signOutLoading,
+    registerLoading,
+    cachedCredentials,
+    setCachedCredentials,
+    handleSignUp,
+    handleSignIn,
+    handleConfirmSignUp,
+  } = useAuth();
 
   const [error, setError] = useState({
     email: false,
@@ -17,12 +26,17 @@ export const useAuthentication = () => {
 
   return {
     error,
+    signInLoading,
+    signOutLoading,
+    registerLoading,
     confirmPassword,
     cachedCredentials,
     navigate,
     setError,
     handleSignUp,
+    handleSignIn,
     setCachedCredentials,
     setConfirmPassword,
+    handleConfirmSignUp,
   };
 };

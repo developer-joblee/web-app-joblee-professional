@@ -54,6 +54,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        sourcemap: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
           {

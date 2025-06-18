@@ -16,8 +16,14 @@ import { defaultColor } from '@/theme';
 import { useAuthentication } from '@/pages/Authentication/Authentication.hooks';
 
 export const Login = () => {
-  const { error, cachedCredentials, navigate, setCachedCredentials } =
-    useAuthentication();
+  const {
+    error,
+    signInLoading,
+    cachedCredentials,
+    navigate,
+    setCachedCredentials,
+    handleSignIn,
+  } = useAuthentication();
 
   return (
     <Stack gap="2rem" maxWidth="360px" width="full" id="login-container">
@@ -105,7 +111,13 @@ export const Login = () => {
         </Flex>
       </Stack>
 
-      <Button>Entrar</Button>
+      <Button
+        disabled={signInLoading}
+        loading={signInLoading}
+        onClick={() => handleSignIn(cachedCredentials)}
+      >
+        Entrar
+      </Button>
       <Flex justifyContent="center" alignItems="center" gap="0.5rem">
         <Text fontSize="sm">Ainda não tem uma conta?</Text>
         <Button

@@ -12,8 +12,13 @@ import { defaultColor } from '@/theme';
 import { useAuthentication } from '@/pages/Authentication/Authentication.hooks';
 
 export const CodeVerify = () => {
-  const { error, cachedCredentials, navigate, setCachedCredentials } =
-    useAuthentication();
+  const {
+    error,
+    cachedCredentials,
+    navigate,
+    setCachedCredentials,
+    handleConfirmSignUp,
+  } = useAuthentication();
 
   return (
     <Stack gap="2rem" maxWidth="360px" width="full" id="login-container">
@@ -83,7 +88,9 @@ export const CodeVerify = () => {
         </Field.Root>
       </Stack>
 
-      <Button onClick={() => console.log('submit')}>Verificar código</Button>
+      <Button onClick={() => handleConfirmSignUp(cachedCredentials)}>
+        Verificar código
+      </Button>
       <Flex justifyContent="center" alignItems="center" gap="0.25rem">
         <Text fontSize="sm">Voltar para a tela de</Text>
         <Button

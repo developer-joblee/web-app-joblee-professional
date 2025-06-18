@@ -1,10 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { Button, CloseButton, Dialog, Portal, Text } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 
 export const PWAInstallButton = () => {
-  const [canShowModal, setCanShowModal] = useState(false);
   const {
     isInstalled,
     isInstallable,
@@ -21,17 +18,10 @@ export const PWAInstallButton = () => {
     }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      const shouldShow = isInstalled || !isInstallable ? false : true;
-      setCanShowModal(shouldShow);
-    }, 5000);
-  }, []);
-
   return (
     <Dialog.Root
       closeOnInteractOutside={false}
-      open={canShowModal}
+      open={!isInstalled && isInstallable}
       size="xs"
       placement="bottom"
       motionPreset="slide-in-bottom"
@@ -69,15 +59,5 @@ export const PWAInstallButton = () => {
         </Dialog.Positioner>
       </Portal>
     </Dialog.Root>
-    // <Flex
-    //   display={isInstalled || !isInstallable ? 'none' : 'flex'}
-    //   position="fixed"
-    //   bottom="20px"
-    //   right="20px"
-    // >
-    //   <Button onClick={handleInstall}>
-    //     Instalar Joblee <LuArrowDownToLine />
-    //   </Button>
-    // </Flex>
   );
 };

@@ -14,6 +14,17 @@ export default defineConfig({
       manifest: {
         name: 'Joblee - Profissional',
         short_name: 'Joblee',
+        categories: [
+          'job',
+          'services',
+          'professional',
+          'productivity',
+          'utilities',
+          'business',
+          'communication',
+          'personalization',
+        ],
+        id: 'joblee-professional-pwa-app',
         description: 'Joblee - Profissional',
         theme_color: '#6759ff',
         background_color: '#ffffff',

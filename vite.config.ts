@@ -15,7 +15,7 @@ export default defineConfig({
         name: 'Joblee - Profissional',
         short_name: 'Joblee',
         description: 'Joblee - Profissional',
-        theme_color: '#ffffff',
+        theme_color: '#6759ff',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',

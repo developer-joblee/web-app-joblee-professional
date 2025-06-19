@@ -1,5 +1,5 @@
 import { defaultColor } from '@/theme';
-import { Flex, Stack, Tabs, Text } from '@chakra-ui/react';
+import { Stack, Tabs, Text } from '@chakra-ui/react';
 import type { IconType } from 'react-icons/lib';
 import { LuHouse, LuWallet, LuReceipt, LuUser } from 'react-icons/lu';
 
@@ -48,45 +48,48 @@ export const ResponsiveNavMenu = ({
   onChangeTab,
 }: ResponsiveNavMenuProps) => {
   return (
-    <Flex width="100%">
-      <Tabs.Root
-        value={currentTab}
-        onValueChange={(e) => onChangeTab(e.value as TabsProps)}
-        variant="plain"
+    <Tabs.Root
+      value={currentTab}
+      onValueChange={(e) => onChangeTab(e.value as TabsProps)}
+      variant="plain"
+      width="100%"
+      position="fixed"
+      zIndex="900"
+      bottom="0"
+      left="0"
+      right="0"
+    >
+      <Tabs.List
+        bg="bg.muted"
+        rounded="l3"
+        gridTemplateColumns="repeat(4, 1fr)"
+        p="1"
         width="100%"
+        alignItems="center"
       >
-        <Tabs.List
-          bg="bg.muted"
-          rounded="l3"
-          gridTemplateColumns="repeat(4, 1fr)"
-          p="1"
-          width="100%"
-          alignItems="center"
-        >
-          {tabs.map((tab) => (
-            <Tabs.Trigger value={tab.value} height="max-content" width="25%">
-              <Stack
-                gap="0"
-                alignItems="center"
-                justifyContent="center"
-                width="100%"
+        {tabs.map((tab) => (
+          <Tabs.Trigger value={tab.value} height="max-content" width="25%">
+            <Stack
+              gap="0"
+              alignItems="center"
+              justifyContent="center"
+              width="100%"
+            >
+              <tab.icon
+                size="1.35rem"
+                color={getActiveColor(tab.value, currentTab)}
+              />
+              <Text
+                fontSize="smaller"
+                color={getActiveColor(tab.value, currentTab)}
               >
-                <tab.icon
-                  size="1.35rem"
-                  color={getActiveColor(tab.value, currentTab)}
-                />
-                <Text
-                  fontSize="smaller"
-                  color={getActiveColor(tab.value, currentTab)}
-                >
-                  {tab.label}
-                </Text>
-              </Stack>
-            </Tabs.Trigger>
-          ))}
-          <Tabs.Indicator rounded="l2" />
-        </Tabs.List>
-      </Tabs.Root>
-    </Flex>
+                {tab.label}
+              </Text>
+            </Stack>
+          </Tabs.Trigger>
+        ))}
+        <Tabs.Indicator rounded="l2" />
+      </Tabs.List>
+    </Tabs.Root>
   );
 };

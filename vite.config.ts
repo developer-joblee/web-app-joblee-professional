@@ -27,7 +27,7 @@ export default defineConfig({
         id: 'joblee-professional-pwa-app',
         description: 'Joblee - Profissional',
         theme_color: '#6759ff',
-        background_color: '#ffffff',
+        background_color: '#6759ff',
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',

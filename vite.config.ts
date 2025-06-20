@@ -14,6 +14,12 @@ export default defineConfig({
       manifest: {
         name: 'Joblee - Profissional',
         short_name: 'Joblee',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        /* @ts-expect-error */
+        strategies: 'injectManifest', // Importante para usar SW customizado
+        srcDir: 'public',
+        filename: 'sw.js',
+        push_messaging: true,
         categories: [
           'job',
           'services',
@@ -32,6 +38,7 @@ export default defineConfig({
         orientation: 'portrait',
         scope: '/',
         start_url: '/',
+        includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
         icons: [
           {
             src: 'pwa-192x192.png',
@@ -52,8 +59,6 @@ export default defineConfig({
             purpose: 'maskable',
           },
         ],
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        /* @ts-expect-error */
         gcm_sender_id: '708447937247',
       },
       workbox: {

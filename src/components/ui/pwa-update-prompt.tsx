@@ -14,7 +14,7 @@ export function PWAUpdatePrompt({
   const [updateAvailable, setUpdateAvailable] = useState(false);
 
   const {
-    offlineReady: [offlineReady, setOfflineReady],
+    offlineReady: [, setOfflineReady],
     needRefresh: [needRefresh, setNeedRefresh],
     updateServiceWorker,
   } = useRegisterSW({
@@ -44,15 +44,6 @@ export function PWAUpdatePrompt({
     setNeedRefresh(false);
     setUpdateAvailable(false);
   };
-
-  if (offlineReady) {
-    return (
-      <div className="pwa-toast">
-        <div className="pwa-message">App pronto para funcionar offline</div>
-        <button onClick={handleClose}>Fechar</button>
-      </div>
-    );
-  }
 
   if (updateAvailable) {
     return (

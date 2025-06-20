@@ -52,6 +52,9 @@ export default defineConfig({
             purpose: 'maskable',
           },
         ],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        /* @ts-expect-error */
+        gcm_sender_id: '708447937247',
       },
       workbox: {
         sourcemap: true,

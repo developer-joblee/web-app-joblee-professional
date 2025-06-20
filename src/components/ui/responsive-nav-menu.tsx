@@ -68,7 +68,7 @@ export const ResponsiveNavMenu = ({
       direction="row"
       gap="1rem"
       justifyContent="space-between"
-      padding="1rem"
+      padding="0 1rem"
     >
       {tabs.map((tab) => (
         <Button

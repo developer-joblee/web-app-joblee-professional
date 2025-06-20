@@ -22,5 +22,9 @@ messaging.onBackgroundMessage((payload) => {
   self.registration.showNotification(title, {
     body,
     icon: '/pwa-192x192.png',
+    badge: '/pwa-72x72.png',
+    tag: 'joblee-notification',
+    requireInteraction: true,
+    title: data.title || data.notification?.title || 'Joblee',
   });
 });

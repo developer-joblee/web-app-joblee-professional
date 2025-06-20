@@ -1,3 +1,4 @@
+import { useAuth } from '@/hooks/useAuth';
 import {
   Avatar,
   Box,
@@ -34,6 +35,7 @@ const configItems = [
 ];
 
 export const AppSidebar = ({ opened }: { opened: boolean }) => {
+  const { handleSignOut } = useAuth();
   return (
     <Stack
       height="100vh"
@@ -140,7 +142,12 @@ export const AppSidebar = ({ opened }: { opened: boolean }) => {
                   <LuCircleHelp /> Ajuda
                 </Menu.Item>
                 <Menu.Separator />
-                <Menu.Item width="10rem" value="export" cursor="pointer">
+                <Menu.Item
+                  width="10rem"
+                  value="export"
+                  cursor="pointer"
+                  onClick={handleSignOut}
+                >
                   <LuLogOut />
                   Logout
                 </Menu.Item>

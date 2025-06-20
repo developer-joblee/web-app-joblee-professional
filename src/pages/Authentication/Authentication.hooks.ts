@@ -10,10 +10,12 @@ export const useAuthentication = () => {
     signOutLoading,
     registerLoading,
     cachedCredentials,
+    forgotPasswordLoading,
     setCachedCredentials,
     handleSignUp,
     handleSignIn,
     handleConfirmSignUp,
+    handleForgotPassword,
   } = useAuth();
 
   const [error, setError] = useState({
@@ -31,12 +33,14 @@ export const useAuthentication = () => {
     registerLoading,
     confirmPassword,
     cachedCredentials,
+    forgotPasswordLoading,
     navigate,
     setError,
     handleSignUp,
     handleSignIn,
-    setCachedCredentials,
     setConfirmPassword,
     handleConfirmSignUp,
+    handleForgotPassword,
+    setCachedCredentials,
   };
 };

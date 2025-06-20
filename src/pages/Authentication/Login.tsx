@@ -104,7 +104,7 @@ export const Login = () => {
             padding="0"
             color={defaultColor[900]}
             fontSize="sm"
-            onClick={() => navigate('/code-verify')}
+            onClick={() => navigate('/forgot-password')}
           >
             Esqueceu sua senha?
           </Button>

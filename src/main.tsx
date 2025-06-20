@@ -10,6 +10,7 @@ import { AuthProvider } from './context/Auth.context.tsx';
 import { Amplify } from 'aws-amplify';
 import { AppRoutes } from './routes/index.tsx';
 import './index.css';
+import { Modal } from './components/ui/modal.tsx';
 
 export const system = createSystem(defaultConfig, config);
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
         <AuthProvider>
           <Provider defaultTheme="light">
             <ChakraProvider value={system}>
+              <Modal />
               <AppRoutes />
             </ChakraProvider>
           </Provider>

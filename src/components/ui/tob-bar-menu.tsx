@@ -55,7 +55,7 @@ export const TobBarMenu = ({ children, onOpenMenu }: TobBarMenuProps) => {
           </Float>
         </IconButton>
       </Flex>
-      <Box padding="1rem 2rem">{children}</Box>
+      <Box padding={{ base: '0.5rem', md: '1rem 2rem' }}>{children}</Box>
     </Stack>
   );
 };

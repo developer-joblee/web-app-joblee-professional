@@ -5,18 +5,21 @@ import {
   confirmSignUp,
   fetchAuthSession,
   getCurrentUser,
+  resetPassword,
   signIn,
   signOut,
   signUp,
 } from 'aws-amplify/auth';
 import { useNavigate } from 'react-router-dom';
 import { useStorage } from '@/hooks/useStorage';
+import { useGlobal } from '@/hooks/useGlobal';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = React.createContext({
   signInLoading: false,
   registerLoading: false,
   signOutLoading: false,
+  forgotPasswordLoading: false,
   cachedCredentials: {} as RegisterCredentials,
   setCachedCredentials: {} as React.Dispatch<
     React.SetStateAction<RegisterCredentials>
@@ -25,6 +28,9 @@ export const AuthContext = React.createContext({
   handleSignUp: {} as (credentials: RegisterCredentials) => void,
   handleConfirmSignUp: {} as (credentials: ConfirmCredentials) => void,
   handleSignOut: {} as () => void,
+  handleForgotPassword: {} as (
+    credentials: Pick<UserCredentials, 'username'>,
+  ) => void,
 });
 
 type UserCredentials = {
@@ -43,10 +49,12 @@ type RegisterCredentials = ConfirmCredentials & {
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
+  const { setModalSettings } = useGlobal();
   const { setStorage, removeKeyStorage } = useStorage();
   const [signInLoading, setSignInLoading] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
   const [signOutLoading, setSignOutLoading] = useState(false);
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
 
   const [cachedCredentials, setCachedCredentials] =
     useState<RegisterCredentials>({
@@ -62,6 +70,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     toaster.create({
       description: message,
       type: 'error',
+    });
+  };
+
+  const handleNavigateToCodeVerify = () => {
+    setModalSettings({ open: false });
+    navigate('/code-verify');
+  };
+
+  const handleNotifyEmailSend = (email: string) => {
+    setModalSettings({
+      open: true,
+      title: 'Verifique seu email',
+      content: `Um email foi enviado para ${email}, verifique sua caixa de entrada para redefinir sua senha`,
+      placement: 'center',
+      onClose: () => handleNavigateToCodeVerify(),
+      footer: {
+        primaryButton: {
+          label: 'Continuar',
+          onClick: () => handleNavigateToCodeVerify(),
+        },
+      },
     });
   };
 
@@ -135,6 +164,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleForgotPassword = async (
+    credentials: Pick<UserCredentials, 'username'>,
+  ) => {
+    try {
+      setForgotPasswordLoading(true);
+      await resetPassword({ username: credentials.username });
+      handleNotifyEmailSend(credentials.username);
+    } catch (error) {
+      handleError(error as Error, 'Houve um erro ao enviar o email');
+    } finally {
+      setForgotPasswordLoading(false);
+    }
+  };
+
   const handleSignOut = async () => {
     setSignOutLoading(true);
     try {
@@ -155,11 +198,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         signOutLoading,
         registerLoading,
         cachedCredentials,
+        forgotPasswordLoading,
         handleSignIn,
         handleSignUp,
         handleSignOut,
         handleConfirmSignUp,
         setCachedCredentials,
+        handleForgotPassword,
       }}
     >
       {children}

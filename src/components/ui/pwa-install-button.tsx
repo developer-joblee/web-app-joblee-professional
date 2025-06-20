@@ -30,7 +30,7 @@ export const PWAInstallButton = () => {
         <Dialog.Positioner pointerEvents="none">
           <Dialog.Content margin="16px">
             <Dialog.Header>
-              <Dialog.Title>Deseja instalar o Joblee?</Dialog.Title>
+              <Dialog.Title>Deseja instalar o App da Joblee?</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
               <Text fontSize="sm">

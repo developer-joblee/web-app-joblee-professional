@@ -7,8 +7,8 @@ import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
 import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
+import { PWANotificationTester } from '@/components/ui/pwa-notification-tester';
 import '@/App.css';
-import { getToken, messaging } from '@/firebase/firebase';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { getStorage } = useStorage();
@@ -33,10 +33,6 @@ export const AppRoutes = () => {
   };
 
   useEffect(() => {
-    console.log(messaging);
-    getToken(messaging).then((token) => {
-      console.log(token);
-    });
     const preventDoubleTapZoom = (e: TouchEvent) => {
       if (e.touches.length > 1) {
         e.preventDefault();
@@ -59,6 +55,7 @@ export const AppRoutes = () => {
         onUpdateApplied={handleUpdateApplied}
       />
       <PWAInstallButton />
+      <PWANotificationTester />
       <Routes>
         {publicRoutes.map((route) => (
           <Route

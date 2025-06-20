@@ -1,17 +1,11 @@
 import { AppSidebar } from '@/components/ui/app-sidebar';
-import {
-  Button,
-  CloseButton,
-  Drawer,
-  Flex,
-  Portal,
-  Stack,
-} from '@chakra-ui/react';
+import { CloseButton, Drawer, Flex, Portal, Stack } from '@chakra-ui/react';
 import { TobBarMenu } from '@/components/ui/tob-bar-menu';
 import { useEffect, useState } from 'react';
 import { ResponsiveNavMenu } from '@/components/ui/responsive-nav-menu';
 import { type TabsProps } from '../components/ui/responsive-nav-menu';
 import { Profile } from '@/pages/Profile/Profile';
+import { UserProfileButton } from '@/components/ui/user-profile-button';
 
 const useMediaQuery = () => {
   const [isDesktop, setIsDesktop] = useState(false);
@@ -74,17 +68,19 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
           <Drawer.Positioner>
             <Drawer.Content>
               <Drawer.Header>
-                <Drawer.Title>Drawer Title</Drawer.Title>
+                <Drawer.Title>
+                  <UserProfileButton
+                    opened={openedDrawer}
+                    name="Segun Adebayo"
+                    padding="0"
+                    email="segun@joblee.com"
+                    image="https://bit.ly/sage-adebayo"
+                  />
+                </Drawer.Title>
               </Drawer.Header>
               <Drawer.Body>
                 <Profile />
               </Drawer.Body>
-              <Drawer.Footer>
-                <Drawer.ActionTrigger asChild>
-                  <Button variant="outline">Cancel</Button>
-                </Drawer.ActionTrigger>
-                <Button>Save</Button>
-              </Drawer.Footer>
               <Drawer.CloseTrigger asChild>
                 <CloseButton size="sm" onClick={() => setOpenedDrawer(false)} />
               </Drawer.CloseTrigger>

@@ -1,13 +1,5 @@
 import { useAuth } from '@/hooks/useAuth';
-import {
-  Avatar,
-  Box,
-  Button,
-  Menu,
-  Portal,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
+import { Avatar, Box, Button, Menu, Portal, Stack } from '@chakra-ui/react';
 import {
   LuCalendar,
   LuHouse,
@@ -17,6 +9,7 @@ import {
   LuCircleHelp,
   LuLogOut,
 } from 'react-icons/lu';
+import { UserProfileButton } from './user-profile-button';
 
 const navItems = [
   { icon: LuHouse, label: 'Home', path: '/' },
@@ -105,31 +98,13 @@ export const AppSidebar = ({ opened }: { opened: boolean }) => {
         </Stack>
         <Menu.Root positioning={{ placement: 'top-end' }}>
           <Menu.Trigger asChild>
-            <Button
-              variant="ghost"
-              justifyContent="flex-start"
-              height="60px"
-              gap="0.75rem"
-              width="100%"
-              padding={opened ? '1rem' : '0.125rem'}
-            >
-              <Avatar.Root shape="rounded" size="sm">
-                <Avatar.Fallback name="Segun Adebayo" />
-                <Avatar.Image src="https://bit.ly/sage-adebayo" />
-              </Avatar.Root>
-              <Stack
-                gap="0px"
-                width="100%"
-                alignItems="flex-start"
-                display={opened ? 'flex' : 'none'}
-                opacity={opened ? 1 : 0}
-                transition="opacity 0.3s ease-in-out"
-              >
-                <Text fontWeight="medium">Felipe Erick</Text>
-                <Text fontSize="xs" fontWeight="normal">
-                  felipe@joblee.com
-                </Text>
-              </Stack>
+            <Button padding="0" variant="ghost">
+              <UserProfileButton
+                opened={opened}
+                name="Segun Adebayo"
+                email="segun@joblee.com"
+                image="https://bit.ly/sage-adebayo"
+              />
             </Button>
           </Menu.Trigger>
           <Portal>

@@ -6,8 +6,9 @@ import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
 import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
-import '@/App.css';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
+import '@/App.css';
+import { getToken, messaging } from '@/firebase/firebase';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const { getStorage } = useStorage();
@@ -32,17 +33,10 @@ export const AppRoutes = () => {
   };
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/firebase-messaging-sw.js')
-        .then((registration) => {
-          console.log('Service Worker registrado com sucesso:', registration);
-        })
-        .catch((err) => {
-          console.error('Erro ao registrar Service Worker:', err);
-        });
-    }
-
+    console.log(messaging);
+    getToken(messaging).then((token) => {
+      console.log(token);
+    });
     const preventDoubleTapZoom = (e: TouchEvent) => {
       if (e.touches.length > 1) {
         e.preventDefault();

@@ -1,13 +1,23 @@
 import { defaultColor } from '@/theme';
-import { Stack, Tabs, Text } from '@chakra-ui/react';
+import { Box, Button, Stack, Text } from '@chakra-ui/react';
 import type { IconType } from 'react-icons/lib';
-import { LuHouse, LuWallet, LuReceipt, LuUser } from 'react-icons/lu';
+import {
+  IoHome,
+  IoHomeOutline,
+  IoPerson,
+  IoPersonOutline,
+  IoReceipt,
+  IoReceiptOutline,
+  IoWallet,
+  IoWalletOutline,
+} from 'react-icons/io5';
 
 export type TabsProps = 'home' | 'orders' | 'wallet' | 'profile';
 
 type TabItem = {
   value: TabsProps;
   icon: IconType;
+  iconOutline: IconType;
   label: string;
 };
 
@@ -19,22 +29,26 @@ type ResponsiveNavMenuProps = {
 const tabs: TabItem[] = [
   {
     value: 'home',
-    icon: LuHouse,
+    icon: IoHome,
+    iconOutline: IoHomeOutline,
     label: 'Home',
   },
   {
     value: 'orders',
-    icon: LuReceipt,
+    icon: IoReceipt,
+    iconOutline: IoReceiptOutline,
     label: 'Pedidos',
   },
   {
     value: 'wallet',
-    icon: LuWallet,
+    icon: IoWallet,
+    iconOutline: IoWalletOutline,
     label: 'Carteira',
   },
   {
     value: 'profile',
-    icon: LuUser,
+    icon: IoPerson,
+    iconOutline: IoPersonOutline,
     label: 'Perfil',
   },
 ];
@@ -48,48 +62,44 @@ export const ResponsiveNavMenu = ({
   onChangeTab,
 }: ResponsiveNavMenuProps) => {
   return (
-    <Tabs.Root
-      value={currentTab}
-      onValueChange={(e) => onChangeTab(e.value as TabsProps)}
-      variant="plain"
+    <Stack
       width="100%"
-      position="fixed"
-      zIndex="900"
-      bottom="0"
-      left="0"
-      right="0"
+      boxShadow="0px -2px 4px rgba(0, 0, 0, 0.1)"
+      direction="row"
+      gap="1rem"
+      justifyContent="space-between"
+      padding="1rem"
     >
-      <Tabs.List
-        bg="bg.muted"
-        rounded="l3"
-        gridTemplateColumns="repeat(4, 1fr)"
-        p="1"
-        width="100%"
-        alignItems="center"
-      >
-        {tabs.map((tab) => (
-          <Tabs.Trigger value={tab.value} height="max-content" width="25%">
-            <Stack
-              gap="0"
-              alignItems="center"
-              justifyContent="center"
-              width="100%"
+      {tabs.map((tab) => (
+        <Button
+          variant="plain"
+          size="md"
+          onClick={() => onChangeTab(tab.value)}
+          key={tab.value}
+        >
+          <Stack gap="0" alignItems="center">
+            <Box
+              data-state={currentTab === tab.value ? 'open' : 'closed'}
+              _open={{
+                animationName: 'fade-in, scale-in',
+                animationDuration: '300ms',
+              }}
             >
-              <tab.icon
-                size="1.35rem"
-                color={getActiveColor(tab.value, currentTab)}
-              />
-              <Text
-                fontSize="smaller"
-                color={getActiveColor(tab.value, currentTab)}
-              >
-                {tab.label}
-              </Text>
-            </Stack>
-          </Tabs.Trigger>
-        ))}
-        <Tabs.Indicator rounded="l2" />
-      </Tabs.List>
-    </Tabs.Root>
+              {currentTab === tab.value ? (
+                <tab.icon color={getActiveColor(tab.value, currentTab)} />
+              ) : (
+                <tab.iconOutline />
+              )}
+            </Box>
+            <Text
+              fontSize="x-small"
+              color={getActiveColor(tab.value, currentTab)}
+            >
+              {tab.label}
+            </Text>
+          </Stack>
+        </Button>
+      ))}
+    </Stack>
   );
 };

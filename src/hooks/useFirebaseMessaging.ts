@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/hooks/useFirebaseMessaging.ts
 import { useEffect, useState } from 'react';
 import { messaging, getToken, onMessage } from '../firebase/firebase';
 
@@ -11,8 +10,7 @@ export const useFirebaseMessaging = () => {
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         getToken(messaging, {
-          vapidKey:
-            'BA0k9VVEMpos6SKh2--5iVUXrnnXy6bZD4y2v4GPuwiDzz-yn6VkysB-q6GjZul1DxLeSEgY_WUKvGU9g8zZA58',
+          vapidKey: import.meta.env.VITE_FCM_VAPID_KEY,
         })
           .then((currentToken: string) => {
             if (currentToken) {

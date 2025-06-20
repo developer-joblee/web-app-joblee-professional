@@ -1,32 +1,17 @@
-// import { Stack } from '@chakra-ui/react';
-// import { ResponsiveNavMenu } from '../components/ui/responsive-nav-menu';
-// import { type TabsProps } from '../components/ui/responsive-nav-menu';
-// import { useState } from 'react';
-// import { Sidebar } from '@/components/ui/side-bar';
-
 import { AppSidebar } from '@/components/ui/app-sidebar';
-import { Flex, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  CloseButton,
+  Drawer,
+  Flex,
+  Portal,
+  Stack,
+} from '@chakra-ui/react';
 import { TobBarMenu } from '@/components/ui/tob-bar-menu';
 import { useEffect, useState } from 'react';
 import { ResponsiveNavMenu } from '@/components/ui/responsive-nav-menu';
 import { type TabsProps } from '../components/ui/responsive-nav-menu';
-
-// export const Layout = ({ children }: { children: React.ReactNode }) => {
-//   const [currentTab, setCurrentTab] = useState<TabsProps>('home');
-
-//   return (
-//     <>
-//       {/* <Stack justifyContent="space-between" height="100%">
-//         <Sidebar /> */}
-//       {children}
-//       {/* <ResponsiveNavMenu
-//           currentTab={currentTab}
-//           onChangeTab={setCurrentTab}
-//         />
-//       </Stack> */}
-//     </>
-//   );
-// };
+import { Profile } from '@/pages/Profile/Profile';
 
 const useMediaQuery = () => {
   const [isDesktop, setIsDesktop] = useState(false);
@@ -49,6 +34,7 @@ const useMediaQuery = () => {
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [opened, setOpened] = useState(false);
+  const [openedDrawer, setOpenedDrawer] = useState(false);
   const [currentTab, setCurrentTab] = useState<TabsProps>('home');
   const isDesktop = useMediaQuery();
 
@@ -64,9 +50,48 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <Stack justifyContent="space-between" height="100vh">
-      <TobBarMenu onOpenMenu={() => setOpened(!opened)}>{children}</TobBarMenu>
-      <ResponsiveNavMenu currentTab={currentTab} onChangeTab={setCurrentTab} />
-    </Stack>
+    <>
+      <Stack justifyContent="space-between" height="100vh">
+        <TobBarMenu onOpenMenu={() => setOpened(!opened)}>
+          {children}
+        </TobBarMenu>
+        <ResponsiveNavMenu
+          currentTab={currentTab}
+          onChangeTab={(tab) => {
+            if (tab === 'profile') {
+              setOpenedDrawer(true);
+              return;
+            }
+
+            setCurrentTab(tab);
+          }}
+        />
+      </Stack>
+
+      <Drawer.Root size="full" open={openedDrawer}>
+        <Portal>
+          <Drawer.Backdrop />
+          <Drawer.Positioner>
+            <Drawer.Content>
+              <Drawer.Header>
+                <Drawer.Title>Drawer Title</Drawer.Title>
+              </Drawer.Header>
+              <Drawer.Body>
+                <Profile />
+              </Drawer.Body>
+              <Drawer.Footer>
+                <Drawer.ActionTrigger asChild>
+                  <Button variant="outline">Cancel</Button>
+                </Drawer.ActionTrigger>
+                <Button>Save</Button>
+              </Drawer.Footer>
+              <Drawer.CloseTrigger asChild>
+                <CloseButton size="sm" onClick={() => setOpenedDrawer(false)} />
+              </Drawer.CloseTrigger>
+            </Drawer.Content>
+          </Drawer.Positioner>
+        </Portal>
+      </Drawer.Root>
+    </>
   );
 };

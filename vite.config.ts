@@ -41,22 +41,40 @@ export default defineConfig({
         includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
         icons: [
           {
+            src: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
+            sizes: '72x72',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+          {
+            src: 'https://i.postimg.cc/PxQMZP3V/favicon-96x96.png',
+            sizes: '96x96',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+          {
+            src: 'https://i.postimg.cc/yY2B2djb/128.png',
+            sizes: '128x128',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+          {
             src: 'https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
-            purpose: 'any',
+            purpose: 'any maskable',
+          },
+          {
+            src: 'https://i.postimg.cc/G3qmgd6W/256.png',
+            sizes: '256x256',
+            type: 'image/png',
+            purpose: 'any maskable',
           },
           {
             src: 'https://i.postimg.cc/qMRGhB8Q/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any',
-          },
-          {
-            src: 'https://i.postimg.cc/qMRGhB8Q/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
+            purpose: 'any maskable',
           },
         ],
         gcm_sender_id: '708447937247',

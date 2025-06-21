@@ -16,15 +16,43 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
+// messaging.onBackgroundMessage((payload) => {
+//   console.log('[firebase-messaging-sw.js] Mensagem em background: ', payload);
+//   const { title, body } = payload.notification;
+//   self.registration.showNotification(title, {
+//     body,
+//     icon: 'https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png',
+//     badge: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
+//     tag: 'joblee-notification',
+//     requireInteraction: true,
+//     title: data.title || data.notification?.title || 'Joblee',
+//   });
+// });
+
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Mensagem em background: ', payload);
-  const { title, body } = payload.notification;
-  self.registration.showNotification(title, {
-    body,
+
+  const notificationTitle =
+    payload.notification?.title || payload.data?.title || 'Joblee';
+  const notificationOptions = {
+    body:
+      payload.notification?.body || payload.data?.body || 'Nova notificação',
     icon: 'https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png',
     badge: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
     tag: 'joblee-notification',
     requireInteraction: true,
-    title: data.title || data.notification?.title || 'Joblee',
-  });
+    data: {
+      url: payload.data?.url || '/',
+      ...payload.data,
+    },
+    actions: [
+      {
+        action: 'open',
+        title: 'Abrir',
+        icon: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
+      },
+    ],
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });

@@ -21,8 +21,8 @@ messaging.onBackgroundMessage((payload) => {
   const { title, body } = payload.notification;
   self.registration.showNotification(title, {
     body,
-    icon: '/pwa-192x192.png',
-    badge: '/pwa-72x72.png',
+    icon: 'https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png',
+    badge: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
     tag: 'joblee-notification',
     requireInteraction: true,
     title: data.title || data.notification?.title || 'Joblee',

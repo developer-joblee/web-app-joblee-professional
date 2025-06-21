@@ -41,19 +41,19 @@ export default defineConfig({
         includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: 'https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'https://i.postimg.cc/qMRGhB8Q/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: 'pwa-512x512.png',
+            src: 'https://i.postimg.cc/qMRGhB8Q/pwa-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',

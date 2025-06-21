@@ -7,7 +7,9 @@ self.addEventListener('push', function (event) {
     badge: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
   };
 
-  event.waitUntil(self.registration.showNotification('Título', options));
+  event.waitUntil(
+    self.registration.showNotification(event.data.title, options),
+  );
 });
 
 self.addEventListener('notificationclick', function (event) {

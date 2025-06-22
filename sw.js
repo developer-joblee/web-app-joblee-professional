@@ -12,8 +12,9 @@
 //   );
 // });
 
-self.addEventListener('notificationclick', function (event) {
-  event.notification.close();
-  console.log('Notificação clicada');
-  // Lógica para quando o usuário clica na notificação
-});
+// self.addEventListener('notificationclick', function (event) {
+//   event.notification.close();
+//   event.waitUntil(clients.openWindow('/'));
+//   console.log('Notificação clicada');
+//   // Lógica para quando o usuário clica na notificação
+// });

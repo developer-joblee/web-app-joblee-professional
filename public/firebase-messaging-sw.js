@@ -28,6 +28,14 @@ const messaging = firebase.messaging();
 //   });
 // });
 
+messaging.onNotificationClick((payload) => {
+  console.log('[firebase-messaging-sw.js] Notificação clicada: ', payload);
+});
+
+messaging.onMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Mensagem em foreground: ', payload);
+});
+
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Mensagem em background: ', payload);
 
@@ -54,4 +62,21 @@ messaging.onBackgroundMessage((payload) => {
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close();
+  event.waitUntil(clients.openWindow('/')); // ou alguma URL dinâmica
+});
+
+self.addEventListener('push', function (event) {
+  const data = event.data?.json() || {};
+  const title = data.title || 'Notificação';
+  const options = {
+    body: data.body || 'Você recebeu uma nova mensagem!',
+    icon: 'https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png',
+    badge: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
 });

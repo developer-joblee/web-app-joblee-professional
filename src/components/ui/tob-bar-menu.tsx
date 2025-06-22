@@ -5,11 +5,9 @@ import {
   IconButton,
   Separator,
   Stack,
-  Float,
-  Text,
-  Circle,
 } from '@chakra-ui/react';
-import { LuBell, LuPanelLeft } from 'react-icons/lu';
+import { LuPanelLeft } from 'react-icons/lu';
+import { NotificationDrawer } from '../notification-drawer';
 
 type TobBarMenuProps = {
   children: React.ReactNode;
@@ -45,15 +43,7 @@ export const TobBarMenu = ({ children, onOpenMenu }: TobBarMenuProps) => {
             </Breadcrumb.List>
           </Breadcrumb.Root>
         </Flex>
-
-        <IconButton variant="outline" size="xs" width="fit-content">
-          <LuBell />
-          <Float>
-            <Circle size="3" bg="red" color="white">
-              <Text fontSize="x-small">3</Text>
-            </Circle>
-          </Float>
-        </IconButton>
+        <NotificationDrawer />
       </Flex>
       <Box padding={{ base: '0.5rem', md: '1rem 2rem' }}>{children}</Box>
     </Stack>

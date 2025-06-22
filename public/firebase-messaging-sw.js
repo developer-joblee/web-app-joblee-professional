@@ -28,10 +28,6 @@ const messaging = firebase.messaging();
 //   });
 // });
 
-messaging.onNotificationClick((payload) => {
-  console.log('[firebase-messaging-sw.js] Notificação clicada: ', payload);
-});
-
 messaging.onMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Mensagem em foreground: ', payload);
 });

@@ -40,17 +40,17 @@ messaging.onBackgroundMessage((payload) => {
     badge: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
     tag: 'joblee-notification',
     requireInteraction: true,
-    data: {
-      url: payload.data?.url || '/',
-      ...payload.data,
-    },
-    actions: [
-      {
-        action: 'open',
-        title: 'Abrir',
-        icon: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
-      },
-    ],
+    // data: {
+    //   url: payload.data?.url || '/',
+    //   ...payload.data,
+    // },
+    // actions: [
+    //   {
+    //     action: 'open',
+    //     title: 'Abrir',
+    //     icon: 'https://i.postimg.cc/prVJBR3W/pwa-72x72.png',
+    //   },
+    // ],
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

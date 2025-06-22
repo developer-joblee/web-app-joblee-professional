@@ -31,7 +31,7 @@ export const AppSidebar = ({ opened }: { opened: boolean }) => {
   const { handleSignOut } = useAuth();
   return (
     <Stack
-      height="100vh"
+      height="100dvh"
       padding="0.5rem"
       backgroundColor="gray.50"
       border="1px solid #e4e4e7"

@@ -24,7 +24,7 @@ export function Sidebar() {
   return (
     <Box
       w="250px"
-      h="100vh"
+      h="100dvh"
       bg={bg}
       borderRight="1px"
       borderColor={borderColor}

@@ -45,7 +45,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Stack justifyContent="space-between" height="100vh">
+      <Stack justifyContent="space-between" height="100dvh">
         <TobBarMenu onOpenMenu={() => setOpened(!opened)}>
           {children}
         </TobBarMenu>

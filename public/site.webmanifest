@@ -2,6 +2,7 @@
   "name": "Joblee - Profissional",
   "short_name": "Joblee",
   "gcm_sender_id": "708447937247",
+  "start_url": "/",
   "icons": [
     {
       "src": "https://i.postimg.cc/qBQLv6Cz/pwa-192x192.png",

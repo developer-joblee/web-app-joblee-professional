@@ -146,6 +146,7 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
     setIsInstallable(false);
     setInstallPrompt(null);
     setShowIOSModal(false);
+    setIsInstalled(true);
   };
 
   const showIOSInstructions = () => {

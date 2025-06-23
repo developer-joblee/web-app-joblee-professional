@@ -6,7 +6,7 @@ import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
 // import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
-// import { PWAInstallButton } from '@/components/ui/pwa-install-button';
+import { PWAInstallButton } from '@/components/ui/pwa-install-button';
 // import { PWANotification } from '@/components/ui/pwa-notification';
 import '@/App.css';
 
@@ -50,11 +50,11 @@ export const AppRoutes = () => {
 
   return (
     <>
+      <PWAInstallButton />
       {/* <PWAUpdatePrompt
         onUpdateAvailable={handleUpdateAvailable}
         onUpdateApplied={handleUpdateApplied}
       />
-      <PWAInstallButton />
       <PWANotification /> */}
       <Routes>
         {publicRoutes.map((route) => (

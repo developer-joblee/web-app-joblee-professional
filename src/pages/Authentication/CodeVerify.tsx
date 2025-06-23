@@ -23,7 +23,7 @@ export const CodeVerify = () => {
   return (
     <Stack gap="2rem" maxWidth="360px" width="full" id="login-container">
       <Image
-        src="/src/assets/Joblee.png"
+        src="https://i.postimg.cc/CxKJqbfZ/wide-joblee-logo-new.png"
         alt="Joblee"
         width="100%"
         objectFit="contain"

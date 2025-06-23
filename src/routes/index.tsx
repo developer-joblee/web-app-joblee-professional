@@ -5,7 +5,7 @@ import { publicRoutes } from './publicRoutes';
 import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
-import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
+// import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
 // import { PWANotification } from '@/components/ui/pwa-notification';
 import '@/App.css';
@@ -24,13 +24,13 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 };
 
 export const AppRoutes = () => {
-  const handleUpdateAvailable = () => {
-    alert('PWA update available');
-  };
+  // const handleUpdateAvailable = () => {
+  //   alert('PWA update available');
+  // };
 
-  const handleUpdateApplied = () => {
-    console.log('PWA update applied');
-  };
+  // const handleUpdateApplied = () => {
+  //   console.log('PWA update applied');
+  // };
 
   useEffect(() => {
     const preventDoubleTapZoom = (e: TouchEvent) => {
@@ -51,10 +51,10 @@ export const AppRoutes = () => {
   return (
     <>
       <PWAInstallButton />
-      <PWAUpdatePrompt
+      {/* <PWAUpdatePrompt
         onUpdateAvailable={handleUpdateAvailable}
         onUpdateApplied={handleUpdateApplied}
-      />
+      /> */}
       {/*
       <PWANotification /> */}
       <Routes>

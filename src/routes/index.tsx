@@ -35,7 +35,38 @@ export const AppRoutes = () => {
   //   console.log('PWA update applied');
   // };
 
+  const isIOSSafari = () => {
+    if (typeof window === 'undefined') return false;
+
+    const userAgent = window.navigator.userAgent;
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+    const isSafari =
+      /Safari/.test(userAgent) && !/Chrome|CriOS|FxiOS|OPiOS/.test(userAgent);
+
+    return isIOS && isSafari;
+  };
+
+  const isFCMSupported = () => {
+    return (
+      typeof window !== 'undefined' &&
+      'serviceWorker' in navigator &&
+      'Notification' in window &&
+      'PushManager' in window &&
+      !isIOSSafari()
+    );
+  };
+
   useEffect(() => {
+    if (!isFCMSupported()) {
+      console.log('FCM não suportado neste dispositivo');
+      return;
+    }
+
+    if (!messaging) {
+      console.error('Firebase messaging não inicializado');
+      return;
+    }
+
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         getToken(messaging, {

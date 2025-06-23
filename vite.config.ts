@@ -79,6 +79,9 @@ export default defineConfig({
         ],
         gcm_sender_id: '708447937247',
       },
+      devOptions: {
+        enabled: true,
+      },
       workbox: {
         sourcemap: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],

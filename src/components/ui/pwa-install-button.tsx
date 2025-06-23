@@ -29,31 +29,25 @@ export const PWAInstallButton = () => {
       <Portal>
         <Dialog.Positioner pointerEvents="none">
           <Dialog.Content margin="16px">
-            <Dialog.Header>
-              <Dialog.Title>Deseja instalar o App da Joblee?</Dialog.Title>
-            </Dialog.Header>
             <Dialog.Body>
-              <Text fontSize="sm">
-                Instalar o aplicativo permite que você use a Joblee como um
-                aplicativo nativo.
-              </Text>
+              <Text fontSize="sm">Deseja instalar o aplicativo Joblee?</Text>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
                 <Button
-                  size="sm"
+                  size="xs"
                   variant="outline"
                   onClick={dismissInstallPrompt}
                 >
                   Cancelar
                 </Button>
               </Dialog.ActionTrigger>
-              <Button size="sm" onClick={handleInstall}>
+              <Button size="xs" onClick={handleInstall}>
                 Instalar
               </Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
-              <CloseButton size="sm" />
+              <CloseButton size="xs" />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

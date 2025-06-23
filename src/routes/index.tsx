@@ -7,7 +7,7 @@ import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
 // import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
-// import { PWANotification } from '@/components/ui/pwa-notification';
+import { PWANotification } from '@/components/ui/pwa-notification';
 import '@/App.css';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
@@ -54,8 +54,8 @@ export const AppRoutes = () => {
       {/* <PWAUpdatePrompt
         onUpdateAvailable={handleUpdateAvailable}
         onUpdateApplied={handleUpdateApplied}
-      />
-      <PWANotification /> */}
+      />*/}
+      <PWANotification />
       <Routes>
         {publicRoutes.map((route) => (
           <Route

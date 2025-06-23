@@ -6,6 +6,7 @@ import {
   Input,
   Stack,
   Text,
+  Image,
   InputGroup,
 } from '@chakra-ui/react';
 import { PasswordInput } from '@/components/ui/password-input';
@@ -31,6 +32,13 @@ export const Register = () => {
 
   return (
     <Stack gap="2rem" maxWidth="360px" width="full">
+      <Image
+        src="https://i.postimg.cc/CxKJqbfZ/wide-joblee-logo-new.png"
+        alt="Joblee"
+        width="100%"
+        objectFit="contain"
+        height="70px"
+      />
       <Stack gap="0rem">
         <Text fontSize="3xl" fontWeight="bold" lineHeight="1.2">
           Olá, muito prazer!

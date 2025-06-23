@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { routes } from '@/routes/routes';
@@ -8,7 +7,7 @@ import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
-import { messaging, getToken } from '../firebase/firebase';
+import { NotificationPermissionPrompt } from '@/components/ui/notification-permission-prompt';
 import '@/App.css';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
@@ -62,7 +61,7 @@ export const AppRoutes = () => {
   };
 
   useEffect(() => {
-    // Log para debug
+    // Log básico para debug - sem solicitar permissões automaticamente
     console.log('=== FCM Debug Info ===');
     console.log('User Agent:', navigator.userAgent);
     console.log('Is iOS:', isIOS());
@@ -72,54 +71,10 @@ export const AppRoutes = () => {
       'Should Show iOS Install Prompt:',
       shouldShowIOSInstallPrompt(),
     );
-
-    // Se for iOS sem PWA instalada, mostrar aviso
-    if (shouldShowIOSInstallPrompt()) {
-      console.log(
-        '⚠️ iOS detectado: Para receber notificações, instale o app na tela inicial',
-      );
-      return;
-    }
-
-    // Se FCM não for suportado, sair
-    if (!isFCMSupported()) {
-      console.log('❌ FCM não suportado neste dispositivo/configuração');
-      return;
-    }
-
-    // Se messaging não estiver inicializado, sair
-    if (!messaging) {
-      console.error('❌ Firebase messaging não inicializado');
-      return;
-    }
-
-    // Solicitar permissão e obter token
-    const setupFCM = async () => {
-      try {
-        const permission = await Notification.requestPermission();
-        console.log('📝 Permissão de notificação:', permission);
-
-        if (permission === 'granted') {
-          const currentToken = await getToken(messaging, {
-            vapidKey: import.meta.env.VITE_FCM_VAPID_KEY,
-          });
-
-          if (currentToken) {
-            console.log('✅ FCM Token obtido:', currentToken);
-            // Aqui você pode enviar o token para seu backend
-            // sendTokenToServer(currentToken);
-          } else {
-            console.warn('⚠️ Sem token de registro disponível');
-          }
-        } else {
-          console.warn('⚠️ Permissão de notificação negada');
-        }
-      } catch (error) {
-        console.error('❌ Erro ao configurar FCM:', error);
-      }
-    };
-
-    setupFCM();
+    console.log(
+      'Notification Permission:',
+      Notification?.permission || 'não suportado',
+    );
   }, []);
 
   useEffect(() => {
@@ -141,6 +96,7 @@ export const AppRoutes = () => {
   return (
     <>
       <PWAInstallButton />
+      <NotificationPermissionPrompt />
 
       {/* Aviso específico para iOS */}
       {shouldShowIOSInstallPrompt() && (

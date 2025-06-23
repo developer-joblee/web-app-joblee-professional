@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -14,7 +15,6 @@ export default defineConfig({
       manifest: {
         name: 'Joblee - Profissional',
         short_name: 'Joblee',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         /* @ts-expect-error */
         strategies: 'injectManifest', // Importante para usar SW customizado
         srcDir: 'public',
@@ -93,11 +93,8 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365,
               },
-              // cacheKeyWillBeUsed: async ({ request }) => {
-              //   return `${request.url}?${Date.now()}`;
-              // },
             },
           },
           {

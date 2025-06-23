@@ -4,10 +4,8 @@ import { Authentication } from '@/pages/Authentication/Authentication';
 import { publicRoutes } from './publicRoutes';
 import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
-import { useEffect, useState, type ReactNode } from 'react';
-// import { PWAUpdatePrompt } from '@/components/ui/pwa-update-prompt';
+import { useEffect, type ReactNode } from 'react';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
-// import { PWANotification } from '@/components/ui/pwa-notification';
 import { messaging, getToken } from '../firebase/firebase';
 import '@/App.css';
 
@@ -25,16 +23,6 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 };
 
 export const AppRoutes = () => {
-  const [token, setToken] = useState<string | null>(null);
-  console.log(token);
-  // const handleUpdateAvailable = () => {
-  //   alert('PWA update available');
-  // };
-
-  // const handleUpdateApplied = () => {
-  //   console.log('PWA update applied');
-  // };
-
   const isIOSSafari = () => {
     if (typeof window === 'undefined') return false;
 
@@ -74,7 +62,6 @@ export const AppRoutes = () => {
         })
           .then((currentToken: string) => {
             if (currentToken) {
-              setToken(currentToken);
               console.log('FCM Token:', currentToken);
             } else {
               console.warn('Sem token de registro');

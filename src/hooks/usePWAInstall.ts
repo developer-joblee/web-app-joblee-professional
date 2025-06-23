@@ -16,11 +16,14 @@ export interface PWAInstallState {
   isStandalone: boolean;
   platform: string | null;
   canInstall: boolean;
+  showIOSModal: boolean;
+  canShowIOSInstructions: boolean; // Nova propriedade para iOS
 }
 
 export interface PWAInstallActions {
   showInstallPrompt: () => Promise<boolean>;
   dismissInstallPrompt: () => void;
+  showIOSInstructions: () => void; // Nova ação para iOS
 }
 
 export function usePWAInstall(): PWAInstallState & PWAInstallActions {
@@ -29,12 +32,21 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
   const [isInstallable, setIsInstallable] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [platform, setPlatform] = useState<string | null>(null);
+  const [showIOSModal, setShowIOSModal] = useState<boolean>(false);
 
   const isStandalone =
     typeof window !== 'undefined' &&
     (window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true ||
       document.referrer.includes('android-app://'));
+
+  // Detecta se é iOS e Safari
+  const isIOSSafari =
+    typeof window !== 'undefined' &&
+    /iPad|iPhone|iPod/.test(window.navigator.userAgent) &&
+    !(window.navigator as any).standalone &&
+    /Safari/.test(window.navigator.userAgent) &&
+    !/CriOS|FxiOS|OPiOS|mercury/.test(window.navigator.userAgent);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -69,7 +81,6 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
       console.log('PWA install prompt available');
     };
 
-    // Listen for the appinstalled event
     const handleAppInstalled = () => {
       setIsInstalled(true);
       setIsInstallable(false);
@@ -77,8 +88,11 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
       console.log('PWA was installed');
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
+    // Só adiciona listeners se não for iOS Safari
+    if (!isIOSSafari) {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.addEventListener('appinstalled', handleAppInstalled);
+    }
 
     // Check if app is already installed
     if (isStandalone) {
@@ -86,25 +100,30 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
     }
 
     return () => {
-      window.removeEventListener(
-        'beforeinstallprompt',
-        handleBeforeInstallPrompt,
-      );
-      window.removeEventListener('appinstalled', handleAppInstalled);
+      if (!isIOSSafari) {
+        window.removeEventListener(
+          'beforeinstallprompt',
+          handleBeforeInstallPrompt,
+        );
+        window.removeEventListener('appinstalled', handleAppInstalled);
+      }
     };
-  }, [isStandalone]);
+  }, [isStandalone, isIOSSafari]);
 
   const showInstallPrompt = async (): Promise<boolean> => {
+    // Para iOS Safari, mostra instruções em vez do prompt
+    if (isIOSSafari) {
+      setShowIOSModal(true);
+      return false;
+    }
+
     if (!installPrompt) {
       console.log('No install prompt available');
       return false;
     }
 
     try {
-      // Show the install prompt
       await installPrompt.prompt();
-
-      // Wait for the user's choice
       const choiceResult = await installPrompt.userChoice;
 
       if (choiceResult.outcome === 'accepted') {
@@ -126,18 +145,30 @@ export function usePWAInstall(): PWAInstallState & PWAInstallActions {
   const dismissInstallPrompt = () => {
     setIsInstallable(false);
     setInstallPrompt(null);
+    setShowIOSModal(false);
   };
 
-  // Determine if we can show install option
-  const canInstall = isInstallable && !isInstalled && !isStandalone;
+  const showIOSInstructions = () => {
+    setShowIOSModal(true);
+  };
+
+  // Para iOS: pode mostrar instruções se estiver no Safari e não instalado
+  const canShowIOSInstructions = isIOSSafari && !isStandalone;
+
+  // Para Android/outros: pode instalar se tiver prompt disponível
+  const canInstall =
+    (isInstallable && !isInstalled && !isStandalone) || canShowIOSInstructions;
 
   return {
-    isInstallable,
+    isInstallable: isInstallable || canShowIOSInstructions,
     isInstalled,
     isStandalone,
     platform,
     canInstall,
+    showIOSModal,
+    canShowIOSInstructions,
     showInstallPrompt,
     dismissInstallPrompt,
+    showIOSInstructions,
   };
 }

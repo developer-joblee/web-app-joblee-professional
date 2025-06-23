@@ -12,9 +12,9 @@ export const PWAInstallButton = () => {
   const handleInstall = async () => {
     const result = await showInstallPrompt();
     if (result) {
-      alert('Aplicativo instalado com sucesso!');
+      console.log('Aplicativo instalado com sucesso!');
     } else {
-      alert('Instalação cancelada ou falhou.');
+      console.log('Instalação cancelada ou falhou.');
     }
   };
 
@@ -29,25 +29,31 @@ export const PWAInstallButton = () => {
       <Portal>
         <Dialog.Positioner pointerEvents="none">
           <Dialog.Content margin="16px">
+            <Dialog.Header>
+              <Dialog.Title>Deseja instalar o App da Joblee?</Dialog.Title>
+            </Dialog.Header>
             <Dialog.Body>
-              <Text fontSize="sm">Deseja instalar o aplicativo Joblee?</Text>
+              <Text fontSize="sm">
+                Instalar o aplicativo permite que você use a Joblee como um
+                aplicativo nativo.
+              </Text>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
                 <Button
-                  size="xs"
+                  size="sm"
                   variant="outline"
                   onClick={dismissInstallPrompt}
                 >
                   Cancelar
                 </Button>
               </Dialog.ActionTrigger>
-              <Button size="xs" onClick={handleInstall}>
+              <Button size="sm" onClick={handleInstall}>
                 Instalar
               </Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
-              <CloseButton size="xs" />
+              <CloseButton size="sm" />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

@@ -46,7 +46,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Stack justifyContent="space-between" height="100dvh">
+      <Stack justifyContent="space-between" height="100dvh" zIndex="0">
         <TopBarResponsiveMenu>{children}</TopBarResponsiveMenu>
         <ResponsiveNavMenu
           currentTab={currentTab}

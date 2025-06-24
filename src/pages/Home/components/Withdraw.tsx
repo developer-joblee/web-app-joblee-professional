@@ -10,7 +10,7 @@ import { LuEye } from 'react-icons/lu';
 
 export const Withdraw = () => {
   return (
-    <Card.Root width="100%">
+    <Card.Root width="100%" display={{ base: 'none', md: 'flex' }}>
       <Card.Body gap="2" padding="1rem">
         <Stat.Root gap="0">
           <Stat.Label>Meu saldo</Stat.Label>

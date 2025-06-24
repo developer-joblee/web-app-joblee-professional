@@ -63,12 +63,19 @@ export const ResponsiveNavMenu = ({
 }: ResponsiveNavMenuProps) => {
   return (
     <Stack
+      id="responsive-nav-menu"
+      position="fixed"
+      bottom="0"
+      left="0"
+      right="0"
+      zIndex="1100"
       width="100%"
       boxShadow="0px -2px 4px rgba(0, 0, 0, 0.1)"
       direction="row"
       gap="1rem"
       justifyContent="space-between"
       padding="0.5rem 1rem"
+      backgroundColor="white"
     >
       {tabs.map((tab) => (
         <Button

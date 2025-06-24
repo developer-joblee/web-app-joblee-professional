@@ -66,7 +66,13 @@ const NotificationButton = ({ count }: NotificationButtonProps) => (
 );
 
 const UserHeader = () => (
-  <Flex padding="1rem">
+  <Flex
+    padding="1rem"
+    position="sticky"
+    top="0"
+    zIndex="1100"
+    backgroundColor="gray.900"
+  >
     <Flex justifyContent="space-between" alignItems="center" width="100%">
       <Flex gap="1rem">
         <Avatar.Root shape="rounded" size="md">
@@ -194,14 +200,11 @@ export const TopBarResponsiveMenu = ({
 
   return (
     <Stack>
-      <Stack
-        style={{ background: GRADIENT_STYLE }}
-        borderRadius="0 0 0.5rem 0.5rem"
-      >
+      <Stack backgroundColor="gray.900" borderRadius="0 0 0.5rem 0.5rem">
         <UserHeader />
         <BalanceTabs activeTab={activeTab} onTabChange={setActiveTab} />
       </Stack>
-      <Stack>{children}</Stack>
+      <Stack paddingBottom="4rem">{children}</Stack>
     </Stack>
   );
 };

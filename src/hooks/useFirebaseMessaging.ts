@@ -7,6 +7,9 @@ export const useFirebaseMessaging = () => {
   const [notification, setNotification] = useState<any>(null);
 
   useEffect(() => {
+    console.log(
+      'Notification permission status: useEffect useFirebaseMessaging',
+    );
     Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
         getToken(messaging, {

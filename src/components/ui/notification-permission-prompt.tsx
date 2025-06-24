@@ -43,6 +43,7 @@ export const NotificationPermissionPrompt = () => {
   useEffect(() => {
     // Verificar status atual da permissão
     if ('Notification' in window) {
+      console.log('Notification permission status:', Notification.permission);
       setPermissionStatus(Notification.permission);
     }
 
@@ -50,6 +51,7 @@ export const NotificationPermissionPrompt = () => {
     // 1. FCM for suportado
     // 2. Permissão ainda não foi solicitada
     // 3. Não foi dispensado recentemente
+    console.log('shouldShow');
     const shouldShow =
       isFCMSupported() &&
       Notification.permission === 'default' &&

@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/react';
 import { Stack } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
@@ -8,7 +8,7 @@ type UserProfileButtonProps = {
   name: string;
   email: string;
   image: string;
-  padding?: string;
+  mobile?: boolean;
 };
 
 export const UserProfileButton = ({
@@ -16,18 +16,16 @@ export const UserProfileButton = ({
   name,
   email,
   image,
-  padding,
 }: UserProfileButtonProps) => {
   return (
-    <Button
-      variant="ghost"
+    <Flex
       justifyContent="flex-start"
-      height="60px"
+      alignItems="center"
       gap="0.75rem"
       width="100%"
-      padding={padding || (opened ? '1rem' : '0.125rem')}
+      padding="0.25rem 0"
     >
-      <Avatar.Root shape="rounded" size="sm">
+      <Avatar.Root shape="rounded" size="sm" minWidth="40px" minHeight="40px">
         <Avatar.Fallback name={name} />
         <Avatar.Image src={image} />
       </Avatar.Root>
@@ -44,6 +42,6 @@ export const UserProfileButton = ({
           {email}
         </Text>
       </Stack>
-    </Button>
+    </Flex>
   );
 };

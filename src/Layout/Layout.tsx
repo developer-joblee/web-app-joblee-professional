@@ -72,7 +72,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                   <UserProfileButton
                     opened={openedDrawer}
                     name="Segun Adebayo"
-                    padding="0"
                     email="segun@joblee.com"
                     image="https://bit.ly/sage-adebayo"
                   />

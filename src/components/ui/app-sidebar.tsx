@@ -1,5 +1,13 @@
 import { useAuth } from '@/hooks/useAuth';
-import { Avatar, Box, Button, Menu, Portal, Stack } from '@chakra-ui/react';
+import {
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  Portal,
+  Stack,
+} from '@chakra-ui/react';
 import {
   LuCalendar,
   LuHouse,
@@ -98,14 +106,14 @@ export const AppSidebar = ({ opened }: { opened: boolean }) => {
         </Stack>
         <Menu.Root positioning={{ placement: 'top-end' }}>
           <Menu.Trigger asChild>
-            <Button padding="0" variant="ghost">
+            <IconButton variant="ghost" padding="0 0.25rem" height="50px">
               <UserProfileButton
                 opened={opened}
                 name="Segun Adebayo"
                 email="segun@joblee.com"
                 image="https://bit.ly/sage-adebayo"
               />
-            </Button>
+            </IconButton>
           </Menu.Trigger>
           <Portal>
             <Menu.Positioner>

@@ -7,6 +7,9 @@ export const Home = () => {
     <Stack gap="1rem">
       <Withdraw />
       <OrderCard />
+      <OrderCard />
+      <OrderCard />
+      <OrderCard />
     </Stack>
   );
 };

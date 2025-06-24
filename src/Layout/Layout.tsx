@@ -1,6 +1,7 @@
 import { AppSidebar } from '@/components/ui/app-sidebar';
 import { CloseButton, Drawer, Flex, Portal, Stack } from '@chakra-ui/react';
 import { TobBarMenu } from '@/components/ui/tob-bar-menu';
+import { TopBarResponsiveMenu } from '@/components/ui/top-bar-responsive-menu';
 import { useEffect, useState } from 'react';
 import { ResponsiveNavMenu } from '@/components/ui/responsive-nav-menu';
 import { type TabsProps } from '../components/ui/responsive-nav-menu';
@@ -46,9 +47,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Stack justifyContent="space-between" height="100dvh">
-        <TobBarMenu onOpenMenu={() => setOpened(!opened)}>
-          {children}
-        </TobBarMenu>
+        <TopBarResponsiveMenu>{children}</TopBarResponsiveMenu>
         <ResponsiveNavMenu
           currentTab={currentTab}
           onChangeTab={(tab) => {

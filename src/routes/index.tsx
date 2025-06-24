@@ -105,8 +105,8 @@ export const AppRoutes = () => {
       <PWAInstallButton />
       <NotificationPermissionPrompt />
 
-      {/* Aviso específico para iOS */}
-      {shouldShowIOSInstallPrompt() && (
+      {/* Aviso específico para iOS
+      {shouldShowIOSInstallPrompt() && isIOS() && (
         <div
           style={{
             position: 'fixed',
@@ -123,7 +123,7 @@ export const AppRoutes = () => {
         >
           📱 Para receber notificações no iOS, instale o app na tela inicial
         </div>
-      )}
+      )} */}
 
       <Routes>
         {publicRoutes.map((route) => (

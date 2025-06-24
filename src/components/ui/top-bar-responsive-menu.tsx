@@ -68,9 +68,10 @@ const NotificationButton = ({ count }: NotificationButtonProps) => (
 const UserHeader = () => (
   <Flex
     padding="1rem"
-    position="sticky"
+    position="fixed"
     top="0"
     zIndex="1100"
+    width="100%"
     backgroundColor="gray.900"
   >
     <Flex justifyContent="space-between" alignItems="center" width="100%">
@@ -140,7 +141,7 @@ const BalanceTabs = ({ activeTab, onTabChange }: BalanceTabsProps) => {
   });
 
   return (
-    <Stack margin="0.5rem 1rem">
+    <Stack margin="0.5rem 1rem" paddingTop="5rem">
       <Tabs.Root
         defaultValue="balance"
         variant="enclosed"

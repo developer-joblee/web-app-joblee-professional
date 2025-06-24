@@ -1,23 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defaultColor } from '@/theme';
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import type { IconType } from 'react-icons/lib';
-import {
-  IoHome,
-  IoHomeOutline,
-  IoPerson,
-  IoPersonOutline,
-  IoReceipt,
-  IoReceiptOutline,
-  IoWallet,
-  IoWalletOutline,
-} from 'react-icons/io5';
+import { Calendar } from '@/assets/icons/calendar.tsx';
+import { Wallet } from '@/assets/icons/wallet.tsx';
+import { User } from '@/assets/icons/user.tsx';
+import { House } from '@/assets/icons/house.tsx';
 
-export type TabsProps = 'home' | 'orders' | 'wallet' | 'profile';
+export type TabsProps = 'home' | 'calendar' | 'wallet' | 'profile';
 
 type TabItem = {
   value: TabsProps;
-  icon: IconType;
-  iconOutline: IconType;
+  icon: any;
   label: string;
 };
 
@@ -29,26 +22,22 @@ type ResponsiveNavMenuProps = {
 const tabs: TabItem[] = [
   {
     value: 'home',
-    icon: IoHome,
-    iconOutline: IoHomeOutline,
+    icon: House,
     label: 'Home',
   },
   {
-    value: 'orders',
-    icon: IoReceipt,
-    iconOutline: IoReceiptOutline,
-    label: 'Pedidos',
+    value: 'calendar',
+    icon: Calendar,
+    label: 'Agenda',
   },
   {
     value: 'wallet',
-    icon: IoWallet,
-    iconOutline: IoWalletOutline,
-    label: 'Carteira',
+    icon: Wallet,
+    label: 'Pagamentos',
   },
   {
     value: 'profile',
-    icon: IoPerson,
-    iconOutline: IoPersonOutline,
+    icon: User,
     label: 'Perfil',
   },
 ];
@@ -92,11 +81,7 @@ export const ResponsiveNavMenu = ({
                 animationDuration: '300ms',
               }}
             >
-              {currentTab === tab.value ? (
-                <tab.icon color={getActiveColor(tab.value, currentTab)} />
-              ) : (
-                <tab.iconOutline />
-              )}
+              <tab.icon color={getActiveColor(tab.value, currentTab)} />
             </Box>
             <Text
               fontSize="x-small"

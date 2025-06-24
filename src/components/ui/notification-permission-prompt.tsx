@@ -43,7 +43,7 @@ export const NotificationPermissionPrompt = () => {
   useEffect(() => {
     // Verificar status atual da permissão
     if ('Notification' in window) {
-      console.log('Notification permission status:', Notification.permission);
+      console.log('Notification permission status:');
       setPermissionStatus(Notification.permission);
     }
 

@@ -92,7 +92,7 @@ export const PWAInstallButton = () => {
                   Instalar
                 </Button>
               </Dialog.Footer>
-              <Dialog.CloseTrigger asChild>
+              <Dialog.CloseTrigger asChild onClick={dismissInstallPrompt}>
                 <CloseButton size="sm" />
               </Dialog.CloseTrigger>
             </Dialog.Content>

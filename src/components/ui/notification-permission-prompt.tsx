@@ -27,10 +27,14 @@ export const NotificationPermissionPrompt = () => {
 
   // Verifica suporte ao FCM
   const isFCMSupported = () => {
+    // Verificação de segurança para Safari iOS
+    const hasNotificationAPI =
+      typeof window !== 'undefined' && 'Notification' in window;
+
     const hasBasicSupport =
       typeof window !== 'undefined' &&
       'serviceWorker' in navigator &&
-      'Notification' in window &&
+      hasNotificationAPI &&
       'PushManager' in window;
 
     if (isIOS()) {
@@ -41,17 +45,19 @@ export const NotificationPermissionPrompt = () => {
   };
 
   useEffect(() => {
-    // Verificar status atual da permissão
-    if ('Notification' in window) {
-      console.log('Notification permission status:');
-      setPermissionStatus(Notification.permission);
+    // Verificar se Notification API está disponível
+    if (!('Notification' in window)) {
+      console.log('❌ Notification API não está disponível neste navegador');
+      return;
     }
+
+    // Verificar status atual da permissão
+    setPermissionStatus(Notification.permission);
 
     // Mostrar prompt apenas se:
     // 1. FCM for suportado
     // 2. Permissão ainda não foi solicitada
     // 3. Não foi dispensado recentemente
-    console.log('shouldShow');
     const shouldShow =
       isFCMSupported() &&
       Notification.permission === 'default' &&
@@ -71,6 +77,13 @@ export const NotificationPermissionPrompt = () => {
 
   const handleAllowNotifications = async () => {
     try {
+      // Verificação de segurança antes de solicitar permissão
+      if (!('Notification' in window)) {
+        console.error('❌ Notification API não está disponível');
+        setShowPrompt(false);
+        return;
+      }
+
       console.log('🔔 Solicitando permissão de notificação...');
 
       // Esta linha DEVE ser chamada dentro de um handler de evento do usuário

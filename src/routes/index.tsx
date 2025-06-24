@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { routes } from '@/routes/routes';
@@ -41,10 +42,14 @@ export const AppRoutes = () => {
 
   // Verifica suporte completo ao FCM
   const isFCMSupported = () => {
+    // Verificação de segurança para Safari iOS
+    const hasNotificationAPI =
+      typeof window !== 'undefined' && 'Notification' in window;
+
     const hasBasicSupport =
       typeof window !== 'undefined' &&
       'serviceWorker' in navigator &&
-      'Notification' in window &&
+      hasNotificationAPI &&
       'PushManager' in window;
 
     // No iOS, só funciona se a PWA estiver instalada
@@ -73,7 +78,9 @@ export const AppRoutes = () => {
     );
     console.log(
       'Notification Permission:',
-      Notification?.permission || 'não suportado',
+      typeof window !== 'undefined' && 'Notification' in window
+        ? Notification.permission
+        : 'não suportado',
     );
   }, []);
 

@@ -9,8 +9,12 @@ const messaging = getMessaging(app);
 onMessage(messaging, (payload) => {
   console.log('📨 Mensagem recebida em foreground:', payload);
 
-  // Exibir notificação manualmente quando o app está em foreground
-  if (Notification.permission === 'granted') {
+  // Verificar se Notification API está disponível antes de usar
+  if (
+    typeof window !== 'undefined' &&
+    'Notification' in window &&
+    Notification.permission === 'granted'
+  ) {
     const notificationTitle = payload.notification?.title || 'Joblee';
     const notificationOptions = {
       body: payload.notification?.body || 'Nova mensagem',
@@ -22,6 +26,8 @@ onMessage(messaging, (payload) => {
     };
 
     new Notification(notificationTitle, notificationOptions);
+  } else {
+    console.log('⚠️ Notification API não disponível ou permissão negada');
   }
 });
 

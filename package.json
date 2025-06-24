@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite  --host",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview --host",
-    "pwa-preview": "tsc -b && vite build && vite preview"
+    "pwa-preview": "tsc -b && vite build && vite preview --host"
   },
   "dependencies": {
     "@aws-amplify/auth": "^6.13.0",
@@ -23,6 +23,7 @@
     "next-themes": "^0.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-error-boundary": "^5.0.0",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.2",
     "recharts": "^2.15.4"

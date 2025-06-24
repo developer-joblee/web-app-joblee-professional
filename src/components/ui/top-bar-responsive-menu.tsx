@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { LuEye } from 'react-icons/lu';
 import { BsFillPatchQuestionFill } from 'react-icons/bs';
-import { TbInbox } from 'react-icons/tb';
+import { Inbox } from '@/assets/icons/inbox';
 import React, { useState } from 'react';
 
 interface User {
@@ -55,8 +55,13 @@ const user: User = {
 };
 
 const NotificationButton = ({ count }: NotificationButtonProps) => (
-  <IconButton variant="solid" borderRadius="full" padding="0">
-    <TbInbox />
+  <IconButton
+    variant="solid"
+    backgroundColor="rgba(255, 255, 255, 0.2)"
+    borderRadius="full"
+    padding="0"
+  >
+    <Inbox color="white" />
     <Float>
       <Circle size="5" bg="red" color="white">
         <Text fontSize="xs">{count}</Text>

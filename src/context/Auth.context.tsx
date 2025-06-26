@@ -105,7 +105,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         setStorage('idToken', tokens.idToken.toString());
         setCachedCredentials({ ...cachedCredentials, userId });
-        navigate('/');
+        // get ME para saber se o isProfileCompleted
+        navigate('/onboarding');
         return;
       }
     } catch (error) {

@@ -22,16 +22,16 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <GlobalProvider>
-        <AuthProvider>
-          <ErrorBoundary fallback={<ErrorFallback />}>
+        <ErrorBoundary fallback={<ErrorFallback />}>
+          <AuthProvider>
             <Provider defaultTheme="light">
               <ChakraProvider value={system}>
                 <Modal />
                 <AppRoutes />
               </ChakraProvider>
             </Provider>
-          </ErrorBoundary>
-        </AuthProvider>
+          </AuthProvider>
+        </ErrorBoundary>
       </GlobalProvider>
     </BrowserRouter>
   </StrictMode>,

@@ -35,8 +35,8 @@ export const Profile = () => {
     },
     {
       icon: Lock,
-      label: 'Esqueceu a senha',
-      action: handleSignOut,
+      label: 'Alterar senha',
+      action: () => {},
     },
   ];
 

@@ -50,7 +50,7 @@ const GRADIENT_STYLE =
   'linear-gradient(90deg,rgba(110, 94, 245, 1) 50%, rgba(94, 152, 245, 1) 100%)';
 
 const user: User = {
-  name: 'Felipe E',
+  name: 'Felipe Erick',
   avatar: 'https://bit.ly/dan-abramov',
 };
 
@@ -81,12 +81,12 @@ const UserHeader = () => (
   >
     <Flex justifyContent="space-between" alignItems="center" width="100%">
       <Flex gap="1rem">
-        <Avatar.Root shape="rounded" size="md">
+        <Avatar.Root shape="full" size="md">
           <Avatar.Image src={user.avatar} alt={user.name} />
         </Avatar.Root>
         <Stack gap="0">
           <Text fontSize="xs" color="white">
-            bem-vindo(a)!
+            Bem-vindo(a)!
           </Text>
           <Text fontSize="md" color="white" fontWeight="normal">
             {user.name}
@@ -206,11 +206,13 @@ export const TopBarResponsiveMenu = ({
 
   return (
     <Stack>
-      <Stack backgroundColor="gray.900" borderRadius="0 0 0.5rem 0.5rem">
-        <UserHeader />
-        <BalanceTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      <UserHeader />
+      {/* <Stack backgroundColor="gray.900" borderRadius="0 0 0.5rem 0.5rem">
+         <BalanceTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      </Stack> */}
+      <Stack paddingBottom="4rem" paddingTop="5rem">
+        {children}
       </Stack>
-      <Stack paddingBottom="4rem">{children}</Stack>
     </Stack>
   );
 };

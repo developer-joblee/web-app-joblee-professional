@@ -5,6 +5,7 @@ import { Calendar } from '@/assets/icons/calendar.tsx';
 import { Wallet } from '@/assets/icons/wallet.tsx';
 import { User } from '@/assets/icons/user.tsx';
 import { House } from '@/assets/icons/house.tsx';
+import { useNavigate } from 'react-router-dom';
 
 export type TabsProps = 'home' | 'calendar' | 'wallet' | 'profile';
 
@@ -50,6 +51,8 @@ export const ResponsiveNavMenu = ({
   currentTab,
   onChangeTab,
 }: ResponsiveNavMenuProps) => {
+  const navigate = useNavigate();
+
   return (
     <Stack
       id="responsive-nav-menu"
@@ -70,7 +73,15 @@ export const ResponsiveNavMenu = ({
         <Button
           variant="plain"
           size="md"
-          onClick={() => onChangeTab(tab.value)}
+          onClick={() => {
+            onChangeTab(tab.value);
+            if (tab.value === 'home') {
+              navigate('/');
+            }
+            if (tab.value === 'calendar') {
+              navigate('/calendar');
+            }
+          }}
           key={tab.value}
         >
           <Stack gap="0" alignItems="center">

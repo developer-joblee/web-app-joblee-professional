@@ -15,7 +15,7 @@ import {
 import { LuEye } from 'react-icons/lu';
 import { BsFillPatchQuestionFill } from 'react-icons/bs';
 import { Inbox } from '@/assets/icons/inbox';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface User {
   name: string;
@@ -199,10 +199,12 @@ const BalanceTabs = ({ activeTab, onTabChange }: BalanceTabsProps) => {
   );
 };
 
+console.log('top-bar-responsive-menu.tsx', BalanceTabs);
+
 export const TopBarResponsiveMenu = ({
   children,
 }: TopBarResponsiveMenuProps) => {
-  const [activeTab, setActiveTab] = useState<string | null>('balance');
+  // const [activeTab, setActiveTab] = useState<string | null>('balance');
 
   return (
     <Stack>

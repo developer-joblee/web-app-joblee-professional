@@ -14,21 +14,21 @@ import { LuLock, LuMail, LuUser } from 'react-icons/lu';
 import { defaultColor } from '@/theme';
 import { useAuthentication } from '@/pages/Authentication/Authentication.hooks';
 import { colors } from '@/styles/tokens';
-import { useEffect } from 'react';
+import { PasswordStrengthBar } from '@/components/ui/password-strength-bar';
 
 export const Register = () => {
   const {
     error,
+    passwordLevel,
     cachedCredentials,
+    confirmPasswordError,
     navigate,
+    canSubmit,
     handleSignUp,
+    setAcceptedTerms,
     setConfirmPassword,
     setCachedCredentials,
   } = useAuthentication();
-
-  useEffect(() => {
-    console.log(cachedCredentials);
-  }, [cachedCredentials]);
 
   return (
     <Stack gap="2rem" maxWidth="360px" width="full">
@@ -113,6 +113,7 @@ export const Register = () => {
               }
             />
           </InputGroup>
+
           <Field.HelperText
             color={colors.error}
             display={error.password ? 'block' : 'none'}
@@ -120,6 +121,7 @@ export const Register = () => {
             Senha obrigatória.
           </Field.HelperText>
         </Field.Root>
+        <PasswordStrengthBar level={passwordLevel} />
 
         <Field.Root required>
           <Field.Label>
@@ -127,7 +129,7 @@ export const Register = () => {
           </Field.Label>
           <InputGroup startElement={<LuLock />}>
             <PasswordInput
-              placeholder="Insira sua senha"
+              placeholder="Confirme sua senha"
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </InputGroup>
@@ -135,11 +137,11 @@ export const Register = () => {
             color={colors.error}
             display={error.confirmPassword ? 'block' : 'none'}
           >
-            Senha obrigatória.
+            {confirmPasswordError}
           </Field.HelperText>
         </Field.Root>
         <Flex padding="0.5rem 0 0 0">
-          <Checkbox.Root>
+          <Checkbox.Root onCheckedChange={(e) => setAcceptedTerms(!!e.checked)}>
             <Checkbox.HiddenInput />
             <Checkbox.Control />
             <Flex alignItems="center" gap="0.25rem">
@@ -158,7 +160,12 @@ export const Register = () => {
         </Flex>
       </Stack>
 
-      <Button onClick={() => handleSignUp(cachedCredentials)}>Cadastrar</Button>
+      <Button
+        onClick={() => handleSignUp(cachedCredentials)}
+        disabled={!canSubmit()}
+      >
+        Cadastrar
+      </Button>
       <Flex justifyContent="center" alignItems="center" gap="0.5rem">
         <Text fontSize="sm">Já possui uma conta?</Text>
         <Button

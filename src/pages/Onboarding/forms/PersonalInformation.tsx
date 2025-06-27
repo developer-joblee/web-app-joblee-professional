@@ -4,22 +4,23 @@ import {
   Field,
   InputGroup,
   FileUpload,
-  Icon,
-  Box,
+  Text,
+  Button,
 } from '@chakra-ui/react';
 import {
   LuUser,
   LuMail,
-  LuUpload,
   LuSmartphone,
   LuBriefcaseBusiness,
+  LuFileImage,
 } from 'react-icons/lu';
 import { colors } from '@/styles/tokens';
 import type { FormProps } from '../Onboarding';
+import { FileUploadList } from '@/components/ui/file-upload-list';
 
 export const PersonalInformation = ({ user, error }: FormProps) => {
   return (
-    <Stack gap={{ base: '0', md: '1rem' }}>
+    <Stack gap="1rem">
       <Stack gap="1rem" direction={{ base: 'column', md: 'row' }}>
         <Field.Root>
           <Field.Label>Nome completo</Field.Label>
@@ -52,7 +53,7 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
       </Stack>
       <Stack gap="1rem" direction={{ base: 'column', md: 'row' }}>
         <Field.Root required>
-          <Field.Label>Endereço de email</Field.Label>
+          <Field.Label>Endereço de e-mail</Field.Label>
           <InputGroup startElement={<LuMail />}>
             <Input
               disabled
@@ -82,27 +83,19 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
         </Field.Root>
       </Stack>
 
-      <FileUpload.Root
-        maxW="full"
-        alignItems="stretch"
-        maxFiles={10}
-        mt={6}
-        accept="image/*"
-      >
+      <FileUpload.Root accept="image/*" maxFiles={1} mt={4}>
         <FileUpload.HiddenInput />
-        <FileUpload.Dropzone>
-          <Icon size="md" color="fg.muted">
-            <LuUpload />
-          </Icon>
-          <FileUpload.DropzoneContent>
-            <Box>
-              Você pode arrastar e soltar as fotos que ficarão no seu portfolio
-              aqui
-            </Box>
-            <Box color="fg.muted">.png, .jpg (até 5MB)</Box>
-          </FileUpload.DropzoneContent>
-        </FileUpload.Dropzone>
-        <FileUpload.List />
+        <Stack gap="0.25rem" width={{ base: 'full', md: 'calc(50% - 0.5rem)' }}>
+          <FileUpload.Trigger asChild>
+            <Button variant="outline" size="sm">
+              <LuFileImage /> Adicionar foto do perfil
+            </Button>
+          </FileUpload.Trigger>
+          <Text fontSize="xs">
+            Essa será a foto que irá ser exibida para os usuários.
+          </Text>
+        </Stack>
+        <FileUploadList />
       </FileUpload.Root>
     </Stack>
   );

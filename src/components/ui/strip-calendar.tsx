@@ -82,7 +82,7 @@ const Agenda = ({ selectedDate, items }: AgendaProps) => {
   };
 
   return (
-    <Box mt={6} padding="1rem" bg="gray.50">
+    <Box mt={6} padding="1rem" bg="gray.50" position="relative" zIndex="8">
       <Heading size="md" mb={4}>
         Lista de serviço
       </Heading>
@@ -326,34 +326,42 @@ export const StripCalendar = ({
   }, [dates]);
 
   return (
-    <Box w="full" maxW="4xl" mx="auto">
-      <Flex justify="space-between" padding="0 1rem" align="center">
-        <Heading size="md">
-          {currentDate.toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric',
-          })}
-        </Heading>
-        <Flex gap="0.5rem">
-          <IconButton
-            aria-label="Previous"
-            children={<LuChevronLeft />}
-            size="sm"
-            variant="ghost"
-            onClick={() => scrollToDate('left')}
-          />
-          <IconButton
-            aria-label="Next"
-            children={<LuChevronRight />}
-            size="sm"
-            variant="ghost"
-            onClick={() => scrollToDate('right')}
-          />
+    <Stack>
+      <Box
+        w="full"
+        maxW="4xl"
+        mx="auto"
+        position="sticky"
+        top="75px"
+        zIndex="10"
+        backgroundColor="white"
+      >
+        <Flex justify="space-between" padding="0 1rem" align="center">
+          <Heading size="md">
+            {currentDate.toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </Heading>
+          <Flex gap="0.5rem">
+            <IconButton
+              aria-label="Previous"
+              children={<LuChevronLeft />}
+              size="sm"
+              variant="ghost"
+              onClick={() => scrollToDate('left')}
+            />
+            <IconButton
+              aria-label="Next"
+              children={<LuChevronRight />}
+              size="sm"
+              variant="ghost"
+              onClick={() => scrollToDate('right')}
+            />
+          </Flex>
         </Flex>
-      </Flex>
 
-      <Box position="relative">
         <Flex
           ref={scrollRef}
           gap={2}
@@ -373,10 +381,11 @@ export const StripCalendar = ({
               key={index}
               onClick={() => handleDateClick(dateItem.date)}
               flexShrink={0}
-              w="64px"
+              w="fit-content"
               h="80px"
               position="relative"
               variant="ghost"
+              padding="0"
               transition="all 0.2s"
             >
               <Stack gap="0">
@@ -412,6 +421,6 @@ export const StripCalendar = ({
         </Flex>
       </Box>
       <Agenda selectedDate={currentDate} items={agendaItems} />
-    </Box>
+    </Stack>
   );
 };

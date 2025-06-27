@@ -1,48 +1,34 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Box,
+  Button,
   Field,
   FileUpload,
-  Icon,
-  NativeSelect,
   Stack,
   Text,
   Textarea,
 } from '@chakra-ui/react';
-import { LuUpload } from 'react-icons/lu';
-import type { FormProps } from '../Onboarding';
+import { LuFileImage } from 'react-icons/lu';
+import { useOnboarding } from '../Onboarding.context';
+import { FileUploadList } from '@/components/ui/file-upload-list';
+import { ResponsiveSelect } from '@/components/ui/responsive-select';
+import { serviceCategories } from '../Onboarding.constants';
 
-export const CompanyInformation = ({ user, error }: FormProps) => {
-  console.log(user);
+export const CompanyInformation = () => {
+  const { error, setUser } = useOnboarding();
   return (
     <Stack gap="2rem">
       <Stack gap="0.25rem">
-        <Text fontSize="sm" fontWeight="medium">
-          Adicione as fotos que irão compor o seu portfolio.
-        </Text>
-        <FileUpload.Root
-          maxW="full"
-          alignItems="stretch"
-          maxFiles={10}
-          mt={6}
-          accept="image/*"
-        >
-          {/* <Grid gridTemplateColumns="1fr 1fr" gap="1rem"> */}
-          <FileUpload.HiddenInput />
-          <FileUpload.Dropzone>
-            <Icon size="md" color="fg.muted">
-              <LuUpload />
-            </Icon>
-            <FileUpload.DropzoneContent>
-              <Box>
-                Você pode arrastar e soltar as fotos que ficarão no seu
-                portfolio aqui
-              </Box>
-              <Box color="fg.muted">.png, .jpg (até 5MB)</Box>
-            </FileUpload.DropzoneContent>
-          </FileUpload.Dropzone>
-          <FileUpload.List />
-          {/* </Grid> */}
-        </FileUpload.Root>
+        <ResponsiveSelect
+          label="Escolha a categoria que melhor descreve sua empresa/negócio"
+          options={serviceCategories}
+          placeholder="Selecione"
+          onChange={(selected: any) =>
+            setUser((prev) => ({
+              ...prev,
+              serviceCategory: selected.value,
+            }))
+          }
+        />
       </Stack>
 
       <Field.Root invalid={!!error?.companyName}>
@@ -56,15 +42,26 @@ export const CompanyInformation = ({ user, error }: FormProps) => {
 
       <Stack gap="0.25rem">
         <Text fontSize="sm" fontWeight="medium">
-          Escolha a categoria que melhor descreve sua empresa/negócio.
+          Adicione as fotos que irão compor o seu portfolio.
         </Text>
-        <NativeSelect.Root>
-          <NativeSelect.Field>
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-          </NativeSelect.Field>
-          <NativeSelect.Indicator />
-        </NativeSelect.Root>
+
+        <FileUpload.Root accept="image/*" maxFiles={10} mt={4} mb={4}>
+          <FileUpload.HiddenInput />
+          <Stack
+            gap="0.25rem"
+            width={{ base: 'full', md: 'calc(50% - 0.5rem)' }}
+          >
+            <FileUpload.Trigger asChild>
+              <Button variant="outline" size="sm">
+                <LuFileImage /> Adicionar foto do perfil
+              </Button>
+            </FileUpload.Trigger>
+            <Text fontSize="xs" textAlign="center">
+              Essas fotos serão exibidas para os usuários.
+            </Text>
+          </Stack>
+          <FileUploadList />
+        </FileUpload.Root>
       </Stack>
     </Stack>
   );

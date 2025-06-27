@@ -1,4 +1,5 @@
 import {
+  Em,
   Field,
   Flex,
   NativeSelect,
@@ -8,20 +9,28 @@ import {
 } from '@chakra-ui/react';
 
 type OptionProps = {
-  name: string;
-  id: string;
+  label: string;
+  value: string;
+};
+
+type SelectedOption = {
+  label: string;
+  value: string;
 };
 
 type ResponsiveSelectProps = {
   error?: boolean;
   label?: string;
   clear?: boolean;
+  value?: string | string[];
   disabled?: boolean;
   multiple?: boolean;
   options: OptionProps[];
   placeholder?: string;
   width?: string;
+  required?: boolean;
   icon?: React.ReactNode;
+  onChange: (value: SelectedOption | SelectedOption[]) => void;
 };
 
 export const ResponsiveSelect = ({
@@ -29,30 +38,49 @@ export const ResponsiveSelect = ({
   error,
   label,
   clear,
+  value,
   disabled,
-  multiple,
+  multiple = false,
   options,
   placeholder,
+  required,
   width = 'full',
+  onChange,
 }: ResponsiveSelectProps) => {
+  const valueDefault: string[] = [value as string];
+  const valueMultiple: string[] = value as string[];
+
   const optionsCollection = createListCollection({
-    items: options.map((option) => ({
-      label: option.name,
-      value: option.id,
-    })),
+    items: options,
   });
 
   return (
     <>
-      <Field.Root invalid={error}>
-        <Field.Label display={{ base: 'block', md: 'none' }}>
+      <Field.Root
+        invalid={error}
+        required={required}
+        display={{ base: 'block', md: 'none' }}
+      >
+        <Field.Label display={{ base: 'block', md: 'none' }} mb="0.35rem">
           {label}
+          {required && <Em color="red"> *</Em>}
         </Field.Label>
-        <NativeSelect.Root display={{ base: 'block', md: 'none' }}>
-          <NativeSelect.Field>
+        <NativeSelect.Root>
+          <NativeSelect.Field
+            value={value}
+            onChange={(e) =>
+              onChange({
+                value: e.currentTarget.value,
+                label:
+                  options.find(
+                    (option) => option.value === e.currentTarget.value,
+                  )?.label || '',
+              })
+            }
+          >
             {options.map((option) => (
-              <option key={option.id} value={option.id}>
-                {option.name}
+              <option key={option.value} value={option.value}>
+                {option.label}
               </option>
             ))}
           </NativeSelect.Field>
@@ -64,13 +92,18 @@ export const ResponsiveSelect = ({
         display={{ base: 'none', md: 'block' }}
         disabled={disabled}
         invalid={error}
+        required={required}
         multiple={multiple}
         collection={optionsCollection}
-        size="sm"
         width={width}
+        onValueChange={(e) => onChange(multiple ? e.items : e.items[0])}
+        value={multiple ? valueMultiple : valueDefault}
       >
         <Select.HiddenSelect />
-        <Select.Label mb="0.5rem">{label}</Select.Label>
+        <Select.Label mb="1rem">
+          {label}
+          {required && <Em color="red"> *</Em>}
+        </Select.Label>
         <Select.Control>
           <Select.Trigger>
             {icon ? (

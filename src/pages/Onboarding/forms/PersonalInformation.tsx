@@ -15,10 +15,12 @@ import {
   LuFileImage,
 } from 'react-icons/lu';
 import { colors } from '@/styles/tokens';
-import type { FormProps } from '../Onboarding';
 import { FileUploadList } from '@/components/ui/file-upload-list';
+import { maskPhone } from '@/utils/masks';
+import { useOnboarding } from '../Onboarding.context';
 
-export const PersonalInformation = ({ user, error }: FormProps) => {
+export const PersonalInformation = () => {
+  const { user, error, setUser } = useOnboarding();
   return (
     <Stack gap="1rem">
       <Stack gap="1rem" direction={{ base: 'column', md: 'row' }}>
@@ -26,9 +28,14 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
           <Field.Label>Nome completo</Field.Label>
           <InputGroup startElement={<LuUser />}>
             <Input
-              disabled
+              value={user.name}
               placeholder="Insira seu nome"
-              onChange={(e) => console.log(e)}
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }))
+              }
             />
           </InputGroup>
         </Field.Root>
@@ -39,8 +46,14 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
           </Field.Label>
           <InputGroup startElement={<LuSmartphone />}>
             <Input
-              placeholder="(xx) xxxxx-xxxx"
-              onChange={(e) => console.log(e)}
+              value={maskPhone(user.phoneNumber)}
+              placeholder="(XX) XXXXX-XXXX"
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  phoneNumber: e.target.value,
+                }))
+              }
             />
           </InputGroup>
           <Field.HelperText
@@ -59,7 +72,12 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
               disabled
               value={user?.email}
               placeholder="Insira seu email"
-              onChange={(e) => console.log(e)}
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  email: e.target.value,
+                }))
+              }
             />
           </InputGroup>
         </Field.Root>
@@ -71,7 +89,12 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
           <InputGroup startElement={<LuBriefcaseBusiness />}>
             <Input
               placeholder="Insira o nome da empresa ou nome social"
-              onChange={(e) => console.log(e)}
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  companyName: e.target.value,
+                }))
+              }
             />
           </InputGroup>
           <Field.HelperText
@@ -91,7 +114,7 @@ export const PersonalInformation = ({ user, error }: FormProps) => {
               <LuFileImage /> Adicionar foto do perfil
             </Button>
           </FileUpload.Trigger>
-          <Text fontSize="xs">
+          <Text fontSize="xs" textAlign="center">
             Essa será a foto que irá ser exibida para os usuários.
           </Text>
         </Stack>

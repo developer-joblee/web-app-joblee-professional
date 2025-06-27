@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { colors } from '@/styles/tokens';
 import { Field, Grid, Input, InputGroup, Stack } from '@chakra-ui/react';
 import {
@@ -8,40 +9,37 @@ import {
   LuMapPinned,
   LuTag,
 } from 'react-icons/lu';
-import type { FormProps } from '../Onboarding';
 import { useState } from 'react';
 import { getAddressByZipCode, getCoordinates } from '@/services/services';
 import { ResponsiveSelect } from '@/components/ui/responsive-select';
+import { maskCEP } from '@/utils/masks';
+import { useOnboarding } from '../Onboarding.context';
+import { states } from '../Onboarding.constants';
 
-export const AddressInformation = ({ user, error }: FormProps) => {
-  const [address, setAddress] = useState({
-    neighborhood: '',
-    number: '',
-    city: '',
-    state: '',
-    street: '',
-    zipCode: '',
-    latitude: 0,
-    longitude: 0,
-  });
+export const AddressInformation = () => {
+  const { user, setUser, error } = useOnboarding();
   const [coordinatesLoading, setCoordinatesLoading] = useState(false);
   const [zipCode, setZipCode] = useState('');
 
   const handleZipCodeChange = async () => {
     try {
       setCoordinatesLoading(true);
-      const { data } = await getAddressByZipCode(zipCode);
-      const response = await getCoordinates(zipCode);
-      setAddress({
-        neighborhood: data.bairro,
-        number: '',
-        city: data.localidade,
-        state: data.uf,
-        street: data.logradouro,
-        zipCode: zipCode,
-        latitude: response.data[0].lat,
-        longitude: response.data[0].lon,
-      });
+      const { data } = await getAddressByZipCode(zipCode.replace(/-/g, ''));
+      const response = await getCoordinates(zipCode.replace(/-/g, ''));
+      setUser((prev) => ({
+        ...prev,
+        address: {
+          neighborhood: data.bairro,
+          number: '',
+          complement: '',
+          city: data.localidade,
+          state: data.uf,
+          street: data.logradouro,
+          zipCode: zipCode,
+          latitude: Number(response.data[0].lat),
+          longitude: Number(response.data[0].lon),
+        },
+      }));
     } catch (error) {
       console.log(error);
     } finally {
@@ -56,8 +54,9 @@ export const AddressInformation = ({ user, error }: FormProps) => {
         <InputGroup startElement={<LuTag />}>
           <Input
             placeholder="00000-000"
+            value={maskCEP(zipCode)}
             onBlur={handleZipCodeChange}
-            onChange={(e) => setZipCode(e.target.value)}
+            onChange={(e) => setZipCode(maskCEP(e.target.value))}
           />
         </InputGroup>
       </Field.Root>
@@ -65,9 +64,15 @@ export const AddressInformation = ({ user, error }: FormProps) => {
         <Field.Label>Endereço</Field.Label>
         <InputGroup startElement={<LuMapPin />}>
           <Input
-            value={address.street}
+            value={user.address.street}
             placeholder="Insira seu endereço"
-            onChange={(e) => console.log(e)}
+            disabled={coordinatesLoading}
+            onChange={(e) =>
+              setUser((prev) => ({
+                ...prev,
+                address: { ...prev.address, street: e.target.value },
+              }))
+            }
           />
         </InputGroup>
       </Field.Root>
@@ -75,15 +80,32 @@ export const AddressInformation = ({ user, error }: FormProps) => {
         <Field.Root required>
           <Field.Label>Número</Field.Label>
           <InputGroup startElement={<LuHash />}>
-            <Input placeholder="0000" onChange={(e) => console.log(e)} />
+            <Input
+              value={user.address.number}
+              placeholder="0000"
+              disabled={coordinatesLoading}
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  address: { ...prev.address, number: e.target.value },
+                }))
+              }
+            />
           </InputGroup>
         </Field.Root>
         <Field.Root required>
           <Field.Label>Complemento</Field.Label>
           <InputGroup startElement={<LuChartNoAxesGantt />}>
             <Input
+              value={user.address.complement}
               placeholder="Ex. apto 123"
-              onChange={(e) => console.log(e)}
+              disabled={coordinatesLoading}
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  address: { ...prev.address, complement: e.target.value },
+                }))
+              }
             />
           </InputGroup>
           <Field.HelperText
@@ -100,38 +122,33 @@ export const AddressInformation = ({ user, error }: FormProps) => {
           <Field.Label>Cidade</Field.Label>
           <InputGroup startElement={<LuMapPinned />}>
             <Input
-              value={address.city}
+              value={user.address.city}
               placeholder="Insira sua cidade"
-              onChange={(e) => console.log(e)}
+              onChange={(e) =>
+                setUser((prev) => ({
+                  ...prev,
+                  address: { ...prev.address, city: e.target.value },
+                }))
+              }
             />
           </InputGroup>
         </Field.Root>
 
-        <Field.Root required>
-          <Field.Label>Estado</Field.Label>
-          <InputGroup startElement={<LuMap />}>
-            <Input placeholder="Estado" onChange={(e) => console.log(e)} />
-          </InputGroup>
-          <Field.HelperText
-            color={colors.error}
-            display={error?.companyName ? 'block' : 'none'}
-          >
-            Campo obrigatório.
-          </Field.HelperText>
-        </Field.Root>
+        <ResponsiveSelect
+          label="Estado"
+          required
+          icon={<LuMap />}
+          placeholder="Estado"
+          options={states}
+          value={user.address.state}
+          onChange={(selected: any) =>
+            setUser((prev) => ({
+              ...prev,
+              address: { ...prev.address, state: selected.value },
+            }))
+          }
+        />
       </Grid>
-      <ResponsiveSelect
-        label="Estado"
-        icon={<LuMap />}
-        placeholder="Estado"
-        options={[
-          { name: 'SP', id: 'sp' },
-          { name: 'RJ', id: 'rj' },
-          { name: 'MG', id: 'mg' },
-          { name: 'ES', id: 'es' },
-          { name: 'RS', id: 'rs' },
-        ]}
-      />
     </Stack>
   );
 };

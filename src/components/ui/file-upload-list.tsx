@@ -6,7 +6,13 @@ export const FileUploadList = () => {
   const files = fileUpload.acceptedFiles;
   if (files.length === 0) return null;
   return (
-    <FileUpload.ItemGroup>
+    <FileUpload.ItemGroup
+      display="flex"
+      gap="1rem"
+      mt={4}
+      flexWrap="wrap"
+      flexDirection="row"
+    >
       {files.map((file) => (
         <FileUpload.Item
           w="auto"

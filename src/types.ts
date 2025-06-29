@@ -1,4 +1,5 @@
-export type FormProps = {
+export type UserProps = {
+  id?: string;
   name: string;
   companyName: string;
   email: string;
@@ -7,6 +8,7 @@ export type FormProps = {
   profilePhoto: string;
   description: string;
   services: string[];
+  cognitoUserId: string;
   address: AddressProps;
 };
 

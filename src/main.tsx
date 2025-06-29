@@ -12,6 +12,7 @@ import { AppRoutes } from './routes/index.tsx';
 import { Modal } from './components/ui/modal.tsx';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from './components/error-fallback.tsx';
+import { Toaster } from './components/ui/toaster.tsx';
 import './index.css';
 
 export const system = createSystem(defaultConfig, config);
@@ -23,14 +24,15 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <GlobalProvider>
         <ErrorBoundary fallback={<ErrorFallback />}>
-          <AuthProvider>
-            <Provider defaultTheme="light">
-              <ChakraProvider value={system}>
+          <Provider defaultTheme="light">
+            <ChakraProvider value={system}>
+              <AuthProvider>
+                <Toaster />
                 <Modal />
                 <AppRoutes />
-              </ChakraProvider>
-            </Provider>
-          </AuthProvider>
+              </AuthProvider>
+            </ChakraProvider>
+          </Provider>
         </ErrorBoundary>
       </GlobalProvider>
     </BrowserRouter>

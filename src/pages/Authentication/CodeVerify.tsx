@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Button,
   Field,
@@ -10,11 +11,53 @@ import {
 import { colors } from '@/styles/tokens';
 import { defaultColor } from '@/theme';
 import { useAuthentication } from '@/pages/Authentication/Authentication.hooks';
+import { useEffect, useRef, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
+
+const ResendCodeButton = () => {
+  const timerRef = useRef<any>(null);
+  const { cachedCredentials, registerLoading, resendSignUpCode } = useAuth();
+  const [timerActive, setTimerActive] = useState(false);
+  const [time, setTime] = useState<number>(15);
+
+  const handleResendCode = () => {
+    setTimerActive(true);
+    resendSignUpCode({
+      username: cachedCredentials.username,
+    });
+    timerRef.current = setInterval(() => {
+      setTime((time) => time - 1);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (time === 0) {
+      clearInterval(timerRef.current);
+      setTime(15);
+      setTimerActive(false);
+    }
+  }, [time]);
+
+  return (
+    <Button
+      fontSize="sm"
+      variant="plain"
+      padding="1rem 0 0 0"
+      color={timerActive ? 'gray.500' : defaultColor[900]}
+      onClick={() => !registerLoading && !timerActive && handleResendCode()}
+    >
+      {timerActive
+        ? `Reenviar novamente em ${time} segundos`
+        : 'Reenviar código'}
+    </Button>
+  );
+};
 
 export const CodeVerify = () => {
   const {
     error,
     cachedCredentials,
+    registerLoading,
     navigate,
     setCachedCredentials,
     handleConfirmSignUp,
@@ -76,19 +119,15 @@ export const CodeVerify = () => {
           >
             El código es obligatorio.
           </Field.HelperText>
-          <Button
-            fontSize="sm"
-            variant="plain"
-            padding="1rem 0 0 0"
-            color={defaultColor[900]}
-            onClick={() => console.log('resend')}
-          >
-            Reenviar código
-          </Button>
+          <ResendCodeButton />
         </Field.Root>
       </Stack>
 
-      <Button onClick={() => handleConfirmSignUp(cachedCredentials)}>
+      <Button
+        onClick={() => handleConfirmSignUp(cachedCredentials)}
+        disabled={registerLoading}
+        loading={registerLoading}
+      >
         Verificar código
       </Button>
       <Flex justifyContent="center" alignItems="center" gap="0.25rem">
@@ -97,9 +136,9 @@ export const CodeVerify = () => {
           variant="plain"
           height="auto"
           padding="0"
-          color={defaultColor[900]}
+          color={registerLoading ? 'gray.500' : defaultColor[900]}
           fontSize="sm"
-          onClick={() => navigate('/login')}
+          onClick={() => !registerLoading && navigate('/login')}
         >
           Login
         </Button>

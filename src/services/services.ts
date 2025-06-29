@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { api } from './api';
 import type { AxiosResponse } from 'axios';
+import type { UserProps } from '@/types';
 
 export const getAddressByZipCode = (
   zipCode: string,
@@ -19,5 +21,17 @@ export const getCoordinates = (zipCode: string): Promise<AxiosResponse> => {
   return axios.get(url, {
     params: parameters,
     headers: { 'User-Agent': 'CEPtoCoordinatesApp/1.0' },
+  });
+};
+
+export const postUser = (payload: UserProps): Promise<AxiosResponse> => {
+  return api.post('/professionals', payload);
+};
+
+export const getUser = (id: string): Promise<AxiosResponse> => {
+  return axios.get(`${import.meta.env.VITE_API_BASE_URL}/professionals/${id}`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 };

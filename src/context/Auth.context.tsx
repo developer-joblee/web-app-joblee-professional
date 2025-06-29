@@ -6,6 +6,7 @@ import {
   fetchAuthSession,
   getCurrentUser,
   resetPassword,
+  resendSignUpCode,
   signIn,
   signOut,
   signUp,
@@ -13,6 +14,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useStorage } from '@/hooks/useStorage';
 import { useGlobal } from '@/hooks/useGlobal';
+import { getUser, postUser } from '@/services/services';
+import type { UserProps } from '@/types';
+import { sanitize } from '@/utils/sanitize';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = React.createContext({
@@ -24,6 +28,7 @@ export const AuthContext = React.createContext({
   setCachedCredentials: {} as React.Dispatch<
     React.SetStateAction<RegisterCredentials>
   >,
+  resendSignUpCode: {} as (credentials: { username: string }) => void,
   handleSignIn: {} as (credentials: UserCredentials) => void,
   handleSignUp: {} as (credentials: RegisterCredentials) => void,
   handleConfirmSignUp: {} as (credentials: ConfirmCredentials) => void,
@@ -65,8 +70,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       code: '',
     });
 
-  const handleError = (error: Error, message: string) => {
-    console.error(error);
+  const handleError = async (error: Error, message: string) => {
+    const errorParsed = JSON.parse(JSON.stringify(error) || '{}');
+
+    if (errorParsed?.name === 'UserAlreadyAuthenticatedException') {
+      await signOut();
+      removeKeyStorage('idToken');
+      handleSignIn({
+        username: cachedCredentials.username,
+        password: cachedCredentials.password,
+      });
+      return;
+    }
+
     toaster.create({
       description: message,
       type: 'error',
@@ -97,11 +113,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleSignIn = async (credentials: UserCredentials) => {
     setSignInLoading(true);
     try {
-      const { nextStep } = await signIn(credentials);
+      const response = await signIn(credentials);
+      const { nextStep } = response;
+
+      console.log(response);
 
       if (nextStep?.signInStep === 'DONE') {
         const { userId } = await getCurrentUser();
         const { tokens }: any = await fetchAuthSession();
+        console.log(userId);
+        const { data } = await getUser(userId);
+        console.log(data);
 
         setStorage('idToken', tokens.idToken.toString());
         setCachedCredentials({ ...cachedCredentials, userId });
@@ -110,6 +132,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
     } catch (error) {
+      console.log(error);
       handleError(error as Error, 'Houve um erro ao iniciar sessão');
     } finally {
       setSignInLoading(false);
@@ -134,15 +157,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleConfirmSignUp = async (credentials: ConfirmCredentials) => {
+    setRegisterLoading(true);
     try {
-      setRegisterLoading(true);
-      /* TODO: Type confirmSignUp */
-      const { isSignUpComplete, nextStep }: any = await confirmSignUp({
+      const { isSignUpComplete, nextStep } = await confirmSignUp({
         username: credentials.username || '',
         confirmationCode: credentials.code || '',
       });
 
       console.log(isSignUpComplete, nextStep);
+
+      await postUser(
+        sanitize({
+          name: cachedCredentials.fullName || '',
+          email: cachedCredentials.username || '',
+          cognitoUserId: cachedCredentials.userId || '',
+        }) as UserProps,
+      );
 
       if (isSignUpComplete) {
         handleSignIn({
@@ -150,14 +180,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           password: credentials.password || '',
         });
       }
-
-      // await postUser({
-      //   fullName: registeredUser?.fullName || '',
-      //   email: registeredUser?.username || '',
-      //   userId: registeredUser?.userId || '',
-      // });
-
-      // navigate('/');
     } catch (error) {
       handleError(error as Error, 'Houve um erro ao confirmar o registro');
     } finally {
@@ -192,6 +214,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  console.log(cachedCredentials);
+
   return (
     <AuthContext.Provider
       value={{
@@ -203,6 +227,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         handleSignIn,
         handleSignUp,
         handleSignOut,
+        resendSignUpCode,
         handleConfirmSignUp,
         setCachedCredentials,
         handleForgotPassword,

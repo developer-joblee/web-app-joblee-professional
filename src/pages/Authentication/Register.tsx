@@ -20,6 +20,7 @@ export const Register = () => {
   const {
     error,
     passwordLevel,
+    registerLoading,
     cachedCredentials,
     confirmPasswordError,
     navigate,
@@ -162,7 +163,8 @@ export const Register = () => {
 
       <Button
         onClick={() => handleSignUp(cachedCredentials)}
-        disabled={!canSubmit()}
+        disabled={!canSubmit() || registerLoading}
+        loading={registerLoading}
       >
         Cadastrar
       </Button>

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import type { FormProps } from './Onboarding.types';
+import type { UserProps } from '@/types';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const OnboardingContext = React.createContext({
-  user: {} as FormProps,
-  setUser: {} as React.Dispatch<React.SetStateAction<FormProps>>,
+  user: {} as UserProps,
+  setUser: {} as React.Dispatch<React.SetStateAction<UserProps>>,
   currentStep: 0,
   setCurrentStep: {} as React.Dispatch<React.SetStateAction<number>>,
-  error: {} as Record<keyof FormProps, boolean>,
+  error: {} as Record<keyof UserProps, boolean>,
   setError: {} as React.Dispatch<
-    React.SetStateAction<Record<keyof FormProps, boolean>>
+    React.SetStateAction<Record<keyof UserProps, boolean>>
   >,
 });
 
@@ -19,9 +19,9 @@ interface OnboardingProviderProps {
 
 export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [error, setError] = useState({} as Record<keyof FormProps, boolean>);
+  const [error, setError] = useState({} as Record<keyof UserProps, boolean>);
 
-  const [user, setUser] = useState<FormProps>({
+  const [user, setUser] = useState<UserProps>({
     name: '',
     companyName: '',
     email: '',
@@ -30,6 +30,7 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
     profilePhoto: '',
     description: '',
     services: [],
+    cognitoUserId: '',
     address: {
       neighborhood: '',
       number: '',

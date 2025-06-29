@@ -30,7 +30,7 @@ export const Toaster = () => {
               <Toast.Indicator />
             )}
             <Stack gap="1" flex="1" maxWidth="100%">
-              <Toast.Title>{toast.title || '¡Atención!'}</Toast.Title>
+              <Toast.Title>{toast.title || 'Atenção'}</Toast.Title>
               {toast.description && (
                 <Toast.Description>{toast.description}</Toast.Description>
               )}

@@ -4,14 +4,18 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { routes } from '@/routes/routes';
 import { Authentication } from '@/pages/Authentication/Authentication';
 import { publicRoutes } from './publicRoutes';
-import { useStorage } from '@/hooks/useStorage';
 import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
 import { PWAInstallButton } from '@/components/ui/pwa-install-button';
 import { NotificationPermissionPrompt } from '@/components/ui/notification-permission-prompt';
+import { useStorage } from '@/hooks/useStorage';
+import { useGlobal } from '@/hooks/useGlobal';
+import { ErrorFallback } from '@/components/error-fallback';
+import { Spinner, Stack } from '@chakra-ui/react';
 import '@/App.css';
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
+  const { globalError, globalLoading, user } = useGlobal();
   const { getStorage } = useStorage();
 
   const checkLogged = () => {
@@ -19,13 +23,29 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
     return !!token;
   };
 
+  if (!user?.isProfileCompleted && checkLogged())
+    return <Navigate to="/onboarding" replace />;
+
   if (!checkLogged()) return <Navigate to="/login" replace />;
+
+  if (globalLoading)
+    return (
+      <Stack
+        height="100vh"
+        width="100%"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Spinner size="lg" />
+      </Stack>
+    );
+
+  if (globalError) return <ErrorFallback />;
 
   return children;
 };
 
 export const AppRoutes = () => {
-  // Detecta se é iOS
   const isIOS = () => {
     if (typeof window === 'undefined') return false;
     return /iPad|iPhone|iPod/.test(window.navigator.userAgent);

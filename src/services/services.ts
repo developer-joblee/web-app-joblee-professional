@@ -29,9 +29,17 @@ export const postUser = (payload: UserProps): Promise<AxiosResponse> => {
 };
 
 export const getUser = (id: string): Promise<AxiosResponse> => {
-  return axios.get(`${import.meta.env.VITE_API_BASE_URL}/professionals/${id}`, {
+  return api.get(`${import.meta.env.VITE_API_BASE_URL}/professionals/${id}`, {
     headers: {
       'Content-Type': 'application/json',
     },
   });
+};
+
+export const getCategories = (): Promise<AxiosResponse> => {
+  return api.get('/categories');
+};
+
+export const getProfessionalList = (): Promise<AxiosResponse> => {
+  return api.get(`/professionals`);
 };

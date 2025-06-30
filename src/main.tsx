@@ -21,20 +21,20 @@ Amplify.configure(awsConfig);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <GlobalProvider>
-        <ErrorBoundary fallback={<ErrorFallback />}>
-          <Provider defaultTheme="light">
-            <ChakraProvider value={system}>
-              <AuthProvider>
+    <ChakraProvider value={system}>
+      <ErrorBoundary fallback={<ErrorFallback />}>
+        <BrowserRouter>
+          <GlobalProvider>
+            <AuthProvider>
+              <Provider defaultTheme="light">
                 <Toaster />
                 <Modal />
                 <AppRoutes />
-              </AuthProvider>
-            </ChakraProvider>
-          </Provider>
-        </ErrorBoundary>
-      </GlobalProvider>
-    </BrowserRouter>
+              </Provider>
+            </AuthProvider>
+          </GlobalProvider>
+        </BrowserRouter>
+      </ErrorBoundary>
+    </ChakraProvider>
   </StrictMode>,
 );

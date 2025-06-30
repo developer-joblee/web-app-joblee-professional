@@ -23,6 +23,7 @@ export const TobBarMenu = ({ children, onOpenMenu }: TobBarMenuProps) => {
         justifyContent="space-between"
         borderBottom="1px solid #e4e4e7"
         padding="1rem"
+        backgroundColor="gray.50"
       >
         <Flex width="100%" alignItems="center" gap="1rem">
           <IconButton variant="ghost" size="xs" onClick={onOpenMenu}>
@@ -45,7 +46,7 @@ export const TobBarMenu = ({ children, onOpenMenu }: TobBarMenuProps) => {
         </Flex>
         <NotificationDrawer />
       </Flex>
-      <Box padding={{ base: '0.5rem', md: '1rem 2rem' }}>{children}</Box>
+      <Box padding={{ base: '0.5rem', md: '1rem 1rem' }}>{children}</Box>
     </Stack>
   );
 };

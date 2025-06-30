@@ -121,14 +121,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (nextStep?.signInStep === 'DONE') {
         const { userId } = await getCurrentUser();
         const { tokens }: any = await fetchAuthSession();
-        console.log(userId);
         const { data } = await getUser(userId);
-        console.log(data);
 
         setStorage('idToken', tokens.idToken.toString());
         setCachedCredentials({ ...cachedCredentials, userId });
-        // get ME para saber se o isProfileCompleted
-        navigate('/onboarding');
+
+        const isProfileCompleted = Boolean(data?.content?.isProfileCompleted);
+        navigate(isProfileCompleted ? '/' : '/onboarding');
         return;
       }
     } catch (error) {
@@ -213,8 +212,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setSignOutLoading(false);
     }
   };
-
-  console.log(cachedCredentials);
 
   return (
     <AuthContext.Provider

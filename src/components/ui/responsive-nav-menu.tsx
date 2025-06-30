@@ -5,7 +5,7 @@ import { Calendar } from '@/assets/icons/calendar.tsx';
 import { Wallet } from '@/assets/icons/wallet.tsx';
 import { User } from '@/assets/icons/user.tsx';
 import { House } from '@/assets/icons/house.tsx';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export type TabsProps = 'home' | 'calendar' | 'wallet' | 'profile';
 
@@ -51,10 +51,7 @@ export const ResponsiveNavMenu = ({
   currentTab,
   onChangeTab,
 }: ResponsiveNavMenuProps) => {
-  const path = useLocation().pathname;
   const navigate = useNavigate();
-
-  console.log(path);
 
   return (
     <Stack

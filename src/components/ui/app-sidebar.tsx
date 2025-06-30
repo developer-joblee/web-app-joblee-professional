@@ -18,6 +18,7 @@ import {
   LuLogOut,
 } from 'react-icons/lu';
 import { UserProfileButton } from './user-profile-button';
+import { useGlobal } from '@/hooks/useGlobal';
 
 const navItems = [
   { icon: LuHouse, label: 'Home', path: '/' },
@@ -37,6 +38,7 @@ const configItems = [
 
 export const AppSidebar = ({ opened }: { opened: boolean }) => {
   const { handleSignOut } = useAuth();
+  const { user } = useGlobal();
   return (
     <Stack
       height="100dvh"
@@ -109,9 +111,9 @@ export const AppSidebar = ({ opened }: { opened: boolean }) => {
             <IconButton variant="ghost" padding="0 0.25rem" height="50px">
               <UserProfileButton
                 opened={opened}
-                name="Segun Adebayo"
-                email="segun@joblee.com"
-                image="https://bit.ly/sage-adebayo"
+                name={user.fullName || ''}
+                email={user.email || ''}
+                image={user.profilePhoto || ''}
               />
             </IconButton>
           </Menu.Trigger>

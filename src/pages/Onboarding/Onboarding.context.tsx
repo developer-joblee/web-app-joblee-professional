@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { UserProps } from '@/types';
+import { useGlobal } from '@/hooks/useGlobal';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const OnboardingContext = React.createContext({
@@ -18,19 +19,21 @@ interface OnboardingProviderProps {
 }
 
 export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
+  const { user: globalUser } = useGlobal();
   const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState({} as Record<keyof UserProps, boolean>);
 
   const [user, setUser] = useState<UserProps>({
-    name: '',
+    fullName: globalUser?.fullName || '',
     companyName: '',
-    email: '',
+    email: globalUser?.email || '',
     phoneNumber: '',
     portfolioPhotos: [],
     profilePhoto: '',
     description: '',
     services: [],
     cognitoUserId: '',
+    isProfileCompleted: false,
     address: {
       neighborhood: '',
       number: '',

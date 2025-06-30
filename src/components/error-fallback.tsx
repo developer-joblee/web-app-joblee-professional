@@ -11,7 +11,7 @@ export const ErrorFallback = () => {
       gap="24px"
     >
       <LuConstruction size={100} color="gray" />
-      <Stack gap="8px" width="500px" textAlign="center">
+      <Stack gap="8px" maxWidth="500px" width="full" textAlign="center">
         <Text fontSize="xl">Houve um erro ao carregar o conteudo</Text>
         <Text fontSize="md">
           Tente recarregar a pagina clicando no botao abaixo, se o problema
@@ -19,10 +19,10 @@ export const ErrorFallback = () => {
         </Text>
       </Stack>
       <HStack marginTop="24px">
-        <Button variant="solid">
+        <Button variant="solid" onClick={() => console.log('suporte')}>
           <LuLifeBuoy /> Contatar Suporte
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" onClick={() => window.location.reload()}>
           <LuRotateCcw />
           Recarregar
         </Button>

@@ -16,11 +16,8 @@ import { LuEye } from 'react-icons/lu';
 import { BsFillPatchQuestionFill } from 'react-icons/bs';
 import { Inbox } from '@/assets/icons/inbox';
 import React from 'react';
-
-interface User {
-  name: string;
-  avatar: string;
-}
+import { useGlobal } from '@/hooks/useGlobal';
+import { defaultColor } from '@/theme';
 
 interface TopBarResponsiveMenuProps {
   children: React.ReactNode;
@@ -49,11 +46,6 @@ interface InfoPopoverProps {
 const GRADIENT_STYLE =
   'linear-gradient(90deg,rgba(110, 94, 245, 1) 50%, rgba(94, 152, 245, 1) 100%)';
 
-const user: User = {
-  name: 'Felipe Erick',
-  avatar: 'https://bit.ly/dan-abramov',
-};
-
 const NotificationButton = ({ count }: NotificationButtonProps) => (
   <IconButton
     variant="solid"
@@ -70,33 +62,42 @@ const NotificationButton = ({ count }: NotificationButtonProps) => (
   </IconButton>
 );
 
-const UserHeader = () => (
-  <Flex
-    padding="1rem"
-    position="fixed"
-    top="0"
-    zIndex="1100"
-    width="100%"
-    backgroundColor="gray.900"
-  >
-    <Flex justifyContent="space-between" alignItems="center" width="100%">
-      <Flex gap="1rem">
-        <Avatar.Root shape="full" size="md">
-          <Avatar.Image src={user.avatar} alt={user.name} />
-        </Avatar.Root>
-        <Stack gap="0">
-          <Text fontSize="xs" color="white">
-            Bem-vindo(a)!
-          </Text>
-          <Text fontSize="md" color="white" fontWeight="normal">
-            {user.name}
-          </Text>
-        </Stack>
+const UserHeader = () => {
+  const { user } = useGlobal();
+  const { fullName = '' } = user;
+  const [firstName, secondName] = fullName.split(' ');
+
+  return (
+    <Flex
+      position="fixed"
+      top="0"
+      zIndex="1100"
+      width="100%"
+      padding="0.5rem 1rem"
+      backgroundColor={defaultColor[900]}
+    >
+      <Flex justifyContent="space-between" alignItems="center" width="100%">
+        <Flex gap="1rem">
+          <Avatar.Root shape="full" size="md">
+            <Avatar.Image
+              src={user.profilePhoto}
+              alt={`${firstName} ${secondName}`}
+            />
+          </Avatar.Root>
+          <Stack gap="0">
+            <Text fontSize="xs" color="white">
+              Bem-vindo(a)!
+            </Text>
+            <Text fontSize="md" color="white" fontWeight="normal">
+              {firstName} {secondName}
+            </Text>
+          </Stack>
+        </Flex>
+        <NotificationButton count={2} />
       </Flex>
-      <NotificationButton count={2} />
     </Flex>
-  </Flex>
-);
+  );
+};
 
 const InfoPopover = ({ title, description }: InfoPopoverProps) => (
   <Popover.Root positioning={{ placement: 'bottom-end' }}>

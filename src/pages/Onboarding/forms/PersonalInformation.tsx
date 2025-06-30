@@ -28,12 +28,13 @@ export const PersonalInformation = () => {
           <Field.Label>Nome completo</Field.Label>
           <InputGroup startElement={<LuUser />}>
             <Input
-              value={user.name}
+              value={user.fullName}
               placeholder="Insira seu nome"
+              disabled
               onChange={(e) =>
                 setUser((prev) => ({
                   ...prev,
-                  name: e.target.value,
+                  fullName: e.target.value,
                 }))
               }
             />

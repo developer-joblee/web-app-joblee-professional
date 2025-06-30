@@ -1,9 +1,10 @@
 export type UserProps = {
   id?: string;
-  name: string;
+  fullName: string;
   companyName: string;
   email: string;
   phoneNumber: string;
+  isProfileCompleted?: boolean | null;
   portfolioPhotos: string[];
   profilePhoto: string;
   description: string;

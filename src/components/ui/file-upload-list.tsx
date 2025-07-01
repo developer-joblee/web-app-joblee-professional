@@ -1,9 +1,27 @@
 import { FileUpload, Float, useFileUploadContext } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { LuX } from 'react-icons/lu';
 
-export const FileUploadList = () => {
+type FileUploadListProps = {
+  clearFiles?: boolean;
+  onFileRemoved?: () => void;
+};
+
+export const FileUploadList = ({
+  clearFiles,
+  onFileRemoved,
+}: FileUploadListProps) => {
   const fileUpload = useFileUploadContext();
   const files = fileUpload.acceptedFiles;
+
+  useEffect(() => {
+    if (clearFiles) {
+      fileUpload.clearFiles();
+      onFileRemoved?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clearFiles]);
+
   if (files.length === 0) return null;
   return (
     <FileUpload.ItemGroup

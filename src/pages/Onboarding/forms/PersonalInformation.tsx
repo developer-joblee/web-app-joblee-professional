@@ -24,6 +24,8 @@ import type { UserProps } from '@/types';
 import { getPresignedUrl } from '@/services/services';
 import type { FileError } from '@zag-js/file-utils';
 import { useGlobal } from '@/hooks/useGlobal';
+import axios from 'axios';
+import { toaster } from '@/components/ui/toaster';
 
 interface FileRejection {
   file: File;
@@ -36,7 +38,9 @@ interface FileDetails {
 }
 
 export const PersonalInformation = () => {
+  const [clear, setClear] = useState(false);
   const { user: globalUser } = useGlobal();
+  const [uploadLoading, setUploadLoading] = useState(false);
   const { fieldError, submitLoading, currentStep, user, onNext, onPrev } =
     useOnboarding();
 
@@ -48,15 +52,30 @@ export const PersonalInformation = () => {
   } as UserProps);
 
   const handleFileAccept = async (fileDetails: FileDetails) => {
+    if (fileDetails.acceptedFiles.length === 0) return;
     try {
-      console.log(fileDetails);
-      const presignedUrl = await getPresignedUrl(
+      setUploadLoading(true);
+      const { data } = await getPresignedUrl(
         globalUser?.cognitoUserId || '',
         'profile-picture',
       );
-      console.log(presignedUrl);
+      const response = await axios.put(
+        data.content.presignedUrl,
+        fileDetails.acceptedFiles[0],
+        {
+          headers: { 'Content-Type': fileDetails.acceptedFiles[0].type },
+        },
+      );
+      console.log(response);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setClear(true);
+      toaster.create({
+        description: 'Erro ao enviar arquivo',
+        type: 'error',
+      });
+    } finally {
+      setUploadLoading(false);
     }
   };
 
@@ -156,6 +175,7 @@ export const PersonalInformation = () => {
           accept="image/*"
           maxFiles={1}
           mt={4}
+          disabled={uploadLoading}
           onFileChange={handleFileAccept}
         >
           <FileUpload.HiddenInput />
@@ -164,7 +184,7 @@ export const PersonalInformation = () => {
             width={{ base: 'full', md: 'calc(50% - 0.5rem)' }}
           >
             <FileUpload.Trigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" loading={uploadLoading}>
                 <LuFileImage /> Adicionar foto do perfil
               </Button>
             </FileUpload.Trigger>
@@ -172,7 +192,10 @@ export const PersonalInformation = () => {
               Essa será a foto que irá ser exibida para os usuários.
             </Text>
           </Stack>
-          <FileUploadList />
+          <FileUploadList
+            clearFiles={clear}
+            onFileRemoved={() => setClear(false)}
+          />
         </FileUpload.Root>
       </Stack>
       <Footer

@@ -12,28 +12,56 @@ import { useOnboarding } from '../Onboarding.context';
 import { FileUploadList } from '@/components/ui/file-upload-list';
 import { ResponsiveSelect } from '@/components/ui/responsive-select';
 import { serviceCategories } from '../Onboarding.constants';
+import { useEffect, useState } from 'react';
+import { getCategories } from '@/services/services';
 
 export const CompanyInformation = () => {
-  const { error, setUser } = useOnboarding();
+  const { setUser, fieldError } = useOnboarding();
+  const [categories, setCategories] = useState([]);
+
+  const fetchCategories = async () => {
+    try {
+      const categories = await getCategories();
+      setCategories(categories.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
+
   return (
     <Stack gap="2rem">
       <Stack gap="0.25rem">
         <ResponsiveSelect
+          error={Boolean(fieldError?.services)}
           label="Escolha a categoria que melhor descreve sua empresa/negócio"
           options={serviceCategories}
           placeholder="Selecione"
           onChange={(selected: any) =>
             setUser((prev) => ({
               ...prev,
-              serviceCategory: selected.value,
+              services: [selected.value],
             }))
           }
         />
       </Stack>
 
-      <Field.Root invalid={!!error?.companyName}>
+      <Field.Root invalid={Boolean(fieldError?.description)}>
         <Field.Label>Descrição sobre sua empresa/negócio</Field.Label>
-        <Textarea rows={8} placeholder="Insira uma descrição" />
+        <Textarea
+          rows={8}
+          placeholder="Insira uma descrição"
+          onChange={(e) =>
+            setUser((prev) => ({ ...prev, description: e.target.value }))
+          }
+        />
         <Field.HelperText>
           Essa descrição será exibida no seu perfil.
         </Field.HelperText>

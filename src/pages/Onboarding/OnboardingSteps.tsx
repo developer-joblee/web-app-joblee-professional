@@ -10,10 +10,10 @@ import { useNavigate } from 'react-router-dom';
 import { decodeJWT } from '@aws-amplify/core';
 
 export const OnboardingSteps = () => {
-  const { user, setUser } = useOnboarding();
-  const { getStorage } = useStorage();
   const navigate = useNavigate();
-  const { currentStep, setCurrentStep } = useOnboarding();
+  const { getStorage } = useStorage();
+  const { user, setUser } = useOnboarding();
+  const { currentStep } = useOnboarding();
   const Component = componentsByStep[currentStep];
 
   useEffect(() => {
@@ -40,11 +40,7 @@ export const OnboardingSteps = () => {
       mt={8}
       alignItems="center"
     >
-      <Stepper
-        steps={steps}
-        currentStep={currentStep}
-        onStepChange={setCurrentStep}
-      >
+      <Stepper steps={steps}>
         <Stack gap="2rem">
           <Stack gap="0" mb={8} mt={8}>
             <Flex gap="1rem" alignItems="flex-start">

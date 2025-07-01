@@ -43,3 +43,9 @@ export const getCategories = (): Promise<AxiosResponse> => {
 export const getProfessionalList = (): Promise<AxiosResponse> => {
   return api.get(`/professionals`);
 };
+
+export const getPresignedUrl = (
+  path: 'portfolio' | 'profile-picture',
+): Promise<AxiosResponse> => {
+  return api.get(`/upload/presigned-url/${path}`);
+};

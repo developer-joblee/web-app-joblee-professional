@@ -45,7 +45,13 @@ export const getProfessionalList = (): Promise<AxiosResponse> => {
 };
 
 export const getPresignedUrl = (
-  path: 'portfolio' | 'profile-picture',
+  id: string,
+  imageType: 'portfolio' | 'profile-picture',
 ): Promise<AxiosResponse> => {
-  return api.get(`/upload/presigned-url/${path}`);
+  return api.get(`/upload/presigned-url/professional`, {
+    params: {
+      id,
+      imageType,
+    },
+  });
 };

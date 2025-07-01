@@ -92,7 +92,7 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
     profilePhoto: '',
     description: '',
     services: [],
-    cognitoUserId: '',
+    cognitoUserId: globalUser?.cognitoUserId || '',
     isProfileCompleted: false,
     address: {
       neighborhood: '',

@@ -23,6 +23,7 @@ import { Footer } from '../components/Footer';
 import type { UserProps } from '@/types';
 import { getPresignedUrl } from '@/services/services';
 import type { FileError } from '@zag-js/file-utils';
+import { useGlobal } from '@/hooks/useGlobal';
 
 interface FileRejection {
   file: File;
@@ -35,6 +36,7 @@ interface FileDetails {
 }
 
 export const PersonalInformation = () => {
+  const { user: globalUser } = useGlobal();
   const { fieldError, submitLoading, currentStep, user, onNext, onPrev } =
     useOnboarding();
 
@@ -48,7 +50,10 @@ export const PersonalInformation = () => {
   const handleFileAccept = async (fileDetails: FileDetails) => {
     try {
       console.log(fileDetails);
-      const presignedUrl = await getPresignedUrl('profile-picture');
+      const presignedUrl = await getPresignedUrl(
+        globalUser?.cognitoUserId || '',
+        'profile-picture',
+      );
       console.log(presignedUrl);
     } catch (error) {
       console.log(error);

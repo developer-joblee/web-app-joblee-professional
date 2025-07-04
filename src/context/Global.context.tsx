@@ -60,7 +60,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       setGlobalLoading(true);
       const { userId } = await getCurrentUser();
       const { data } = await getUser(userId);
-      setUser(data.content);
+      setUser({ ...data.content });
 
       if (path) {
         navigate(path);

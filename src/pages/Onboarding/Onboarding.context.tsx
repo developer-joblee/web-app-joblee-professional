@@ -1,20 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { UserProps } from '@/types';
-import { useGlobal } from '@/hooks/useGlobal';
 import { steps } from './Onboarding.constants';
 import { formatErrorResponse, validate } from '@/utils/zod-validation';
+import { toaster } from '@/components/ui/toaster';
+import { useStorage } from '@/hooks/useStorage';
+import { decodeJWT } from '@aws-amplify/core';
+import { useGlobal } from '@/hooks/useGlobal';
+import { useNavigate } from 'react-router-dom';
+import { getCategories, putUser } from '@/services/services';
+import { sanitize } from '@/utils/sanitize';
 import {
   AddressSchema,
   PersonalSchema,
   ProfileSchema,
 } from './Onboarding.schema';
-import { toaster } from '@/components/ui/toaster';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const OnboardingContext = React.createContext({
-  user: {} as UserProps,
-  setUser: {} as React.Dispatch<React.SetStateAction<UserProps>>,
   currentStep: 0,
   setCurrentStep: {} as React.Dispatch<React.SetStateAction<number>>,
   error: {} as Record<keyof UserProps, boolean>,
@@ -27,9 +30,24 @@ export const OnboardingContext = React.createContext({
   setFieldError: {} as React.Dispatch<
     React.SetStateAction<Record<keyof UserProps, boolean>>
   >,
+  categoriesLoading: false,
+  fetchCategories: {} as () => void,
   onPrev: {} as (step: number) => void,
   onNext: {} as (step: number, form: UserProps) => void,
+  categories: {} as CategoriesProps[],
+  setCategories: {} as React.Dispatch<React.SetStateAction<CategoriesProps[]>>,
 });
+
+interface CategoriesPropsRaw {
+  id: string;
+  name: string;
+  synonyms: string[];
+}
+
+interface CategoriesProps {
+  label: string;
+  value: string;
+}
 
 interface OnboardingProviderProps {
   children: React.ReactNode;
@@ -42,17 +60,37 @@ const zodSchemas: Record<number, any> = {
 };
 
 export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
-  const { user: globalUser, globalLoading } = useGlobal();
+  const { getStorage } = useStorage();
+  const navigate = useNavigate();
+  const { user, setUser } = useGlobal();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [error, setError] = useState({} as Record<keyof UserProps, boolean>);
+  const [categories, setCategories] = useState<CategoriesProps[]>([]);
   const [fieldError, setFieldError] = useState(
     {} as Record<keyof UserProps, boolean>,
   );
-  const [currentStep, setCurrentStep] = useState(0);
-  const [submitLoading, setSubmitLoading] = useState(false);
-  const [error, setError] = useState({} as Record<keyof UserProps, boolean>);
 
-  const handleSubmit = () => {
-    console.log(user);
-    // navigate('/');
+  const handleSubmit = async () => {
+    try {
+      setSubmitLoading(true);
+      console.log(user);
+      await putUser(
+        sanitize({
+          ...user,
+          isProfileCompleted: true,
+          rating: undefined,
+          services: undefined,
+          professionalSettings: { allowRenegotiation: true },
+        }),
+      );
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   const onPrev = (step: number) => {
@@ -60,17 +98,21 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
   };
 
   const onNext = async (step: number, form: UserProps) => {
-    console.log(form);
+    const idToken = getStorage('idToken');
+    const { payload: decodedToken } = decodeJWT(idToken);
+
     if (step === steps.length - 1) {
       handleSubmit();
       return;
     }
 
     try {
-      const payload = { ...user, ...form };
+      const payload = { ...user, ...form, email: decodedToken.email };
+
       setFieldError({} as Record<keyof UserProps, boolean>);
       setSubmitLoading(true);
       await validate(zodSchemas[step], payload);
+      setUser({ ...payload } as UserProps);
       setCurrentStep(step + 1);
     } catch (error: any) {
       setFieldError(formatErrorResponse(error.zodError));
@@ -83,52 +125,39 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
     }
   };
 
-  const [user, setUser] = useState<UserProps>({
-    fullName: globalUser?.fullName || '',
-    companyName: '',
-    email: globalUser?.email || '',
-    phoneNumber: '',
-    portfolioPhotos: [],
-    profilePhoto: '',
-    description: '',
-    services: [],
-    cognitoUserId: globalUser?.cognitoUserId || '',
-    isProfileCompleted: false,
-    address: {
-      neighborhood: '',
-      number: '',
-      city: '',
-      state: '',
-      street: '',
-      zipCode: '',
-      latitude: 0,
-      longitude: 0,
-    },
-  });
-
-  useEffect(() => {
-    setUser((prev) => ({
-      ...prev,
-      email: globalUser?.email || '',
-      fullName: globalUser?.fullName || '',
-    }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalLoading]);
+  const fetchCategories = async () => {
+    try {
+      setCategoriesLoading(true);
+      const { data } = await getCategories();
+      const categoriesMapped = data.content.map((item: CategoriesPropsRaw) => ({
+        label: item.name,
+        value: item.id,
+      }));
+      console.log(categoriesMapped);
+      setCategories(categoriesMapped);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setCategoriesLoading(false);
+    }
+  };
 
   return (
     <OnboardingContext.Provider
       value={{
-        user,
         error,
         fieldError,
+        categories,
         currentStep,
         submitLoading,
+        categoriesLoading,
         onPrev,
         onNext,
-        setUser,
         setError,
+        setCategories,
         setFieldError,
         setCurrentStep,
+        fetchCategories,
         setSubmitLoading,
       }}
     >

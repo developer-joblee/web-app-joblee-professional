@@ -19,6 +19,7 @@ import { useOnboarding } from '../Onboarding.context';
 import { states } from '../Onboarding.constants';
 import type { UserProps } from '@/types';
 import { Footer } from '../components/Footer';
+import { toaster } from '@/components/ui/toaster';
 
 export const AddressInformation = () => {
   const { fieldError, currentStep, submitLoading, onNext, onPrev } =
@@ -45,6 +46,7 @@ export const AddressInformation = () => {
       setCoordinatesLoading(true);
       const { data } = await getAddressByZipCode(zipCode.replace(/-/g, ''));
       const response = await getCoordinates(zipCode.replace(/-/g, ''));
+
       setForm((prev) => ({
         ...prev,
         address: {
@@ -61,6 +63,10 @@ export const AddressInformation = () => {
       }));
     } catch (error) {
       console.log(error);
+      toaster.create({
+        description: 'Erro ao buscar endereço',
+        type: 'error',
+      });
     } finally {
       setCoordinatesLoading(false);
     }
@@ -182,7 +188,7 @@ export const AddressInformation = () => {
       <Footer
         currentStep={currentStep}
         loading={submitLoading}
-        onNext={(step) => onNext(step, form)}
+        onNext={(step) => onNext(step, { address: [form.address] })}
         onPrev={onPrev}
       />
     </>

@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Flex, Spinner, Stack, Text } from '@chakra-ui/react';
 import { Suspense, useEffect } from 'react';
 import { Stepper } from './components/Stepper';
@@ -7,13 +5,11 @@ import { componentsByStep, steps } from './Onboarding.constants';
 import { useOnboarding } from './Onboarding.context';
 import { useStorage } from '@/hooks/useStorage';
 import { useNavigate } from 'react-router-dom';
-import { decodeJWT } from '@aws-amplify/core';
 
 export const OnboardingSteps = () => {
   const navigate = useNavigate();
   const { getStorage } = useStorage();
-  const { user, setUser } = useOnboarding();
-  const { currentStep } = useOnboarding();
+  const { currentStep, fetchCategories } = useOnboarding();
   const Component = componentsByStep[currentStep];
 
   useEffect(() => {
@@ -21,14 +17,9 @@ export const OnboardingSteps = () => {
     if (!idToken) {
       navigate('/login');
     } else {
-      const { payload } = decodeJWT(idToken);
-      const { email } = payload;
-      const userNew: any = {
-        ...user,
-        email,
-      };
-      setUser(userNew);
+      fetchCategories();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

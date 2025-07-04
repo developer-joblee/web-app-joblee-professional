@@ -8,9 +8,9 @@ export type UserProps = {
   portfolioPhotos: string[];
   profilePhoto: string;
   description: string;
-  services: string[];
+  categories: { id: string }[];
   cognitoUserId: string;
-  address: AddressProps;
+  address: AddressProps[];
 };
 
 export type AddressProps = {

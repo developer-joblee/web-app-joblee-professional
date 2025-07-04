@@ -11,43 +11,44 @@ import { LuFileImage } from 'react-icons/lu';
 import { useOnboarding } from '../Onboarding.context';
 import { FileUploadList } from '@/components/ui/file-upload-list';
 import { ResponsiveSelect } from '@/components/ui/responsive-select';
-import { serviceCategories } from '../Onboarding.constants';
-import { useEffect, useState } from 'react';
-import { getCategories } from '@/services/services';
+import { useState } from 'react';
+import { useGlobal } from '@/hooks/useGlobal';
+import { Footer } from '../components/Footer';
+import type { UserProps } from '@/types';
 
 export const CompanyInformation = () => {
-  const { setUser, fieldError } = useOnboarding();
-  const [categories, setCategories] = useState([]);
+  const { user } = useGlobal();
+  const {
+    categories,
+    fieldError,
+    currentStep,
+    submitLoading,
+    categoriesLoading,
+    onNext,
+    onPrev,
+  } = useOnboarding();
 
-  const fetchCategories = async () => {
-    try {
-      const categories = await getCategories();
-      setCategories(categories.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log(categories);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
+  const [form, setForm] = useState({
+    ...user,
+    categories: [],
+  } as UserProps);
 
   return (
     <Stack gap="2rem">
       <Stack gap="0.25rem">
         <ResponsiveSelect
-          error={Boolean(fieldError?.services)}
+          disabled={categoriesLoading}
+          error={Boolean(fieldError?.categories)}
+          value={form.categories[0]?.id || ''}
           label="Escolha a categoria que melhor descreve sua empresa/negócio"
-          options={serviceCategories}
           placeholder="Selecione"
+          options={categories}
           onChange={(selected: any) =>
-            setUser((prev) => ({
+            setForm((prev) => ({
               ...prev,
-              services: [selected.value],
+              categories: [{ id: selected.value }],
             }))
           }
         />
@@ -59,7 +60,7 @@ export const CompanyInformation = () => {
           rows={8}
           placeholder="Insira uma descrição"
           onChange={(e) =>
-            setUser((prev) => ({ ...prev, description: e.target.value }))
+            setForm((prev) => ({ ...prev, description: e.target.value }))
           }
         />
         <Field.HelperText>
@@ -91,6 +92,12 @@ export const CompanyInformation = () => {
           <FileUploadList />
         </FileUpload.Root>
       </Stack>
+      <Footer
+        onNext={(step) => onNext(step, form)}
+        onPrev={(step) => onPrev(step)}
+        loading={submitLoading}
+        currentStep={currentStep}
+      />
     </Stack>
   );
 };

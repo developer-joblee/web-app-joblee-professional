@@ -6,7 +6,7 @@ import { Authentication } from '@/pages/Authentication/Authentication';
 import { publicRoutes } from './publicRoutes';
 import { Layout } from '@/Layout/Layout';
 import { useEffect, type ReactNode } from 'react';
-import { PWAInstallButton } from '@/components/ui/pwa-install-button';
+// import { PWAInstallButton } from '@/components/ui/pwa-install-button';
 import { NotificationPermissionPrompt } from '@/components/ui/notification-permission-prompt';
 import { useStorage } from '@/hooks/useStorage';
 import { useGlobal } from '@/hooks/useGlobal';
@@ -122,7 +122,7 @@ export const AppRoutes = () => {
 
   return (
     <>
-      <PWAInstallButton />
+      {/* <PWAInstallButton /> */}
       <NotificationPermissionPrompt />
 
       {/* Aviso específico para iOS

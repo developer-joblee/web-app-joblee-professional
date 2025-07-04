@@ -64,7 +64,11 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (path) {
         navigate(path);
+        return;
       }
+
+      const isProfileCompleted = Boolean(data?.content?.isProfileCompleted);
+      navigate(isProfileCompleted ? '/' : '/onboarding');
     } catch (error) {
       console.log(error);
       setGlobalError(true);

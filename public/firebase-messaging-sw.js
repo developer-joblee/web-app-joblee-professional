@@ -15,14 +15,9 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ❌ REMOVER: onMessage não funciona em service worker
-// messaging.onMessage só funciona no contexto principal da aplicação
-
-// ✅ MANTER: onBackgroundMessage para notificações em background
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Mensagem em background: ', payload);
 
-  // Melhor tratamento dos dados da notificação
   const notificationTitle =
     payload.notification?.title || payload.data?.title || 'Joblee';
 
@@ -38,7 +33,6 @@ messaging.onBackgroundMessage((payload) => {
       url: payload.data?.url || '/',
       ...payload.data,
     },
-    // Vibração no dispositivo (se suportado)
     vibrate: [200, 100, 200],
     // Ações personalizadas (opcional)
     actions: [
@@ -61,8 +55,6 @@ self.addEventListener('notificationclick', function (event) {
   console.log('[SW] Notification click recebido.', event);
 
   event.notification.close();
-
-  // Determinar URL de destino
   const urlToOpen = event.notification.data?.url || '/';
 
   // Lidar com ações específicas

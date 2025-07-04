@@ -116,8 +116,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const response = await signIn(credentials);
       const { nextStep } = response;
 
-      console.log(response);
-
       if (nextStep?.signInStep === 'DONE') {
         const { userId } = await getCurrentUser();
         const { tokens }: any = await fetchAuthSession();

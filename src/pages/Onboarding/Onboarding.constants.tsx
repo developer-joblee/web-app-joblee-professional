@@ -107,11 +107,3 @@ export const states = [
   { label: 'SE', value: 'SE' },
   { label: 'TO', value: 'TO' },
 ];
-
-export const serviceCategories = [
-  { label: 'Nenhuma das opções', value: 'none' },
-  { label: 'A', value: 'A' },
-  { label: 'B', value: 'B' },
-  { label: 'C', value: 'C' },
-  { label: 'D', value: 'D' },
-];

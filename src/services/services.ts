@@ -28,6 +28,10 @@ export const postUser = (payload: UserProps): Promise<AxiosResponse> => {
   return api.post('/professionals', payload);
 };
 
+export const putUser = (payload: UserProps): Promise<AxiosResponse> => {
+  return api.put(`/professionals/${payload.id}`, payload);
+};
+
 export const getUser = (id: string): Promise<AxiosResponse> => {
   return api.get(`${import.meta.env.VITE_API_BASE_URL}/professionals/${id}`, {
     headers: {

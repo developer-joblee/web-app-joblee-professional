@@ -1,11 +1,11 @@
 import {
+  Text,
   Stack,
   Input,
   Field,
+  Button,
   InputGroup,
   FileUpload,
-  Text,
-  Button,
 } from '@chakra-ui/react';
 import {
   LuUser,
@@ -39,13 +39,13 @@ interface FileDetails {
 
 export const PersonalInformation = () => {
   const [clear, setClear] = useState(false);
-  const { user: globalUser } = useGlobal();
+  const { user } = useGlobal();
   const [uploadLoading, setUploadLoading] = useState(false);
-  const { fieldError, submitLoading, currentStep, user, onNext, onPrev } =
+  const { fieldError, submitLoading, currentStep, onNext, onPrev } =
     useOnboarding();
 
   const [form, setForm] = useState({
-    fullName: user.fullName,
+    ...user,
     phoneNumber: '',
     companyName: '',
     email: user.email,
@@ -56,17 +56,12 @@ export const PersonalInformation = () => {
     try {
       setUploadLoading(true);
       const { data } = await getPresignedUrl(
-        globalUser?.cognitoUserId || '',
+        user.cognitoUserId || '',
         'profile-picture',
       );
-      const response = await axios.put(
-        data.content.presignedUrl,
-        fileDetails.acceptedFiles[0],
-        {
-          headers: { 'Content-Type': fileDetails.acceptedFiles[0].type },
-        },
-      );
-      console.log(response);
+      await axios.put(data.content.presignedUrl, fileDetails.acceptedFiles[0], {
+        headers: { 'Content-Type': fileDetails.acceptedFiles[0].type },
+      });
     } catch (error) {
       console.error(error);
       setClear(true);
@@ -87,7 +82,7 @@ export const PersonalInformation = () => {
             <Field.Label>Nome completo</Field.Label>
             <InputGroup startElement={<LuUser />}>
               <Input
-                value={form.fullName || user.fullName}
+                value={form.fullName}
                 placeholder="Insira seu nome"
                 onChange={(e) =>
                   setForm((prev) => ({

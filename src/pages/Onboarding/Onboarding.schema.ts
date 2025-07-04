@@ -8,17 +8,21 @@ export const PersonalSchema = z.object({
 });
 
 export const AddressSchema = z.object({
-  address: z.object({
-    neighborhood: z.string().min(3, 'Bairro é obrigatório'),
-    number: z.string().min(1, 'Número é obrigatório'),
-    city: z.string().min(3, 'Cidade é obrigatória'),
-    state: z.string().min(2, 'Estado é obrigatório'),
-    street: z.string().min(3, 'Rua é obrigatória'),
-    zipCode: z.string().min(8, 'CEP é obrigatório'),
-  }),
+  address: z.array(
+    z.object({
+      neighborhood: z.string().min(3, 'Bairro é obrigatório'),
+      number: z.string().min(1, 'Número é obrigatório'),
+      city: z.string().min(3, 'Cidade é obrigatória'),
+      state: z.string().min(2, 'Estado é obrigatório'),
+      street: z.string().min(3, 'Rua é obrigatória'),
+      zipCode: z.string().min(8, 'CEP é obrigatório'),
+    }),
+  ),
 });
 
 export const ProfileSchema = z.object({
   description: z.string().min(3, 'Descrição é obrigatória'),
-  services: z.array(z.string()).min(1, 'Pelo menos um serviço é obrigatório'),
+  categories: z
+    .array(z.object({ id: z.string() }))
+    .min(1, 'Pelo menos uma categoria é obrigatória'),
 });

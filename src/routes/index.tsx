@@ -14,17 +14,27 @@ import { ErrorFallback } from '@/components/error-fallback';
 import { Spinner, Stack } from '@chakra-ui/react';
 import '@/App.css';
 
+const colors: any = { 400: '#4b41bd', 900: '#6759ff' };
+
+const changeThemeVars = () => {
+  document.documentElement.style.setProperty(
+    '--chakra-colors-gray-900',
+    colors[900],
+  );
+  document.documentElement.style.setProperty(
+    '--chakra-colors-gray-400',
+    colors[400],
+  );
+};
+
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
-  const { globalError, globalLoading, user } = useGlobal();
+  const { globalError, globalLoading } = useGlobal();
   const { getStorage } = useStorage();
 
   const checkLogged = () => {
     const token = getStorage('idToken');
     return !!token;
   };
-
-  if (!user?.isProfileCompleted && checkLogged())
-    return <Navigate to="/onboarding" replace />;
 
   if (!checkLogged()) return <Navigate to="/login" replace />;
 
@@ -86,6 +96,7 @@ export const AppRoutes = () => {
   };
 
   useEffect(() => {
+    changeThemeVars();
     // Log básico para debug - sem solicitar permissões automaticamente
     console.log('=== FCM Debug Info ===');
     console.log('User Agent:', navigator.userAgent);

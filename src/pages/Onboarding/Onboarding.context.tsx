@@ -73,19 +73,25 @@ export const OnboardingProvider = ({ children }: OnboardingProviderProps) => {
   );
 
   const handleSubmit = async () => {
+    const payload = sanitize({
+      ...user,
+      isProfileCompleted: true,
+      rating: undefined,
+      services: undefined,
+      professionalSettings: { allowRenegotiation: true },
+    });
     try {
       setSubmitLoading(true);
-      const payload = sanitize({
-        ...user,
-        isProfileCompleted: true,
-        rating: undefined,
-        services: undefined,
-        professionalSettings: { allowRenegotiation: true },
-      });
       await putUser(payload);
       setUser({ ...user, ...payload } as UserProps);
       navigate('/');
     } catch (error) {
+      // temporary
+
+      setUser({ ...user, ...payload } as UserProps);
+      navigate('/');
+
+      // temporary
       console.log(error);
     } finally {
       setSubmitLoading(false);

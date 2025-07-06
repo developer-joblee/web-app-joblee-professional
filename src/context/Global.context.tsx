@@ -6,6 +6,7 @@ import { getUser } from '@/services/services';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '@aws-amplify/auth';
 import { publicRoutes } from '@/routes/publicRoutes';
+import type { TabsProps } from '@/components/ui/responsive-nav-menu';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const GlobalContext = React.createContext({
@@ -20,6 +21,8 @@ export const GlobalContext = React.createContext({
   setModalSettings: {} as React.Dispatch<React.SetStateAction<ModalProps>>,
   fetchUser: {} as (path?: string) => void,
   path: '' as string,
+  currentTab: '' as TabsProps,
+  setCurrentTab: {} as React.Dispatch<React.SetStateAction<TabsProps>>,
 });
 
 const publicPaths = publicRoutes
@@ -28,6 +31,7 @@ const publicPaths = publicRoutes
 
 export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
+  const [currentTab, setCurrentTab] = useState<TabsProps>('home');
   const path = useLocation().pathname;
   const { pathname } = useLocation();
   const [user, setUser] = useState({} as UserProps);
@@ -90,6 +94,8 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         globalError,
         globalLoading,
         modalSettings,
+        currentTab,
+        setCurrentTab,
         setUser,
         setLogged,
         fetchUser,

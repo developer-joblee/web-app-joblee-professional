@@ -2,6 +2,7 @@ export const COLORS = {
   TITLE: '#52525B',
   BORDER: '#E6E6E6',
   ACCENT: '#BDD01B',
+  PRIMARY: '#4b41bd',
 } as const;
 
 export const SPACING = {

@@ -68,6 +68,7 @@ export const Withdraw = () => {
     <Flex gap="1rem">
       {cards.map((card) => (
         <Card.Root
+          key={card.id}
           width="100%"
           display={{ base: 'none', md: 'flex' }}
           background={card.background}

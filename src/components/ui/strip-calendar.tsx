@@ -16,6 +16,7 @@ import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Map } from '@/assets/icons/map';
 import { defaultColor } from '@/theme';
 import { COLORS } from '@/constants/styles';
+import { NavigationHeader } from './navigation-header';
 
 interface StripCalendarProps {
   selectedDate?: Date;
@@ -161,8 +162,9 @@ export const StripCalendar = ({
   selectedDate = new Date(),
   onDateSelect,
 }: StripCalendarProps) => {
-  const [currentDate, setCurrentDate] = useState(selectedDate);
+  const boxRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [currentDate, setCurrentDate] = useState(selectedDate);
 
   const formatDate = (date: Date, format: string) => {
     const dateToBR = date.toLocaleDateString('pt-BR', { [format]: 'short' });
@@ -328,99 +330,114 @@ export const StripCalendar = ({
   return (
     <Stack>
       <Box
-        w="full"
-        maxW="4xl"
-        mx="auto"
-        position="sticky"
-        top="75px"
+        position="fixed"
+        left="0"
+        right="0"
+        top="0"
+        p="1rem 1rem 0 1rem"
         zIndex="10"
         backgroundColor="white"
+        ref={boxRef}
       >
-        <Flex justify="space-between" padding="0 1rem" align="center">
-          <Heading size="md">
-            {currentDate.toLocaleDateString('pt-BR', {
-              day: '2-digit',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </Heading>
-          <Flex gap="0.5rem">
-            <IconButton
-              aria-label="Previous"
-              children={<LuChevronLeft />}
-              size="sm"
-              variant="ghost"
-              onClick={() => scrollToDate('left')}
-            />
-            <IconButton
-              aria-label="Next"
-              children={<LuChevronRight />}
-              size="sm"
-              variant="ghost"
-              onClick={() => scrollToDate('right')}
-            />
-          </Flex>
-        </Flex>
-
-        <Flex
-          ref={scrollRef}
-          gap={2}
-          overflowX="auto"
-          pb={2}
-          pt={2}
-          css={{
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
-          }}
+        <NavigationHeader title="Agenda" />
+        <Box
+          w="full"
+          maxW="4xl"
+          mx="auto"
+          mt="1rem"
+          pb="0.5rem"
+          backgroundColor="white"
         >
-          {dates.map((dateItem, index) => (
-            <Button
-              key={index}
-              onClick={() => handleDateClick(dateItem.date)}
-              flexShrink={0}
-              w="fit-content"
-              h="80px"
-              position="relative"
-              variant="ghost"
-              padding="0"
-              transition="all 0.2s"
-            >
-              <Stack gap="0">
-                <Text fontSize="x-small" fontWeight="medium" opacity={0.7}>
-                  {dateItem.day}
-                </Text>
-                <Box
-                  borderRadius="full"
-                  backgroundColor={dateItem.isSelected ? 'gray.900' : 'white'}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  transition="all 0.2s"
-                  p="1"
-                  h="40px"
-                  w="40px"
-                >
-                  <Text
-                    fontSize="lg"
-                    color={dateItem.isSelected ? 'white' : 'black'}
-                  >
-                    {dateItem.dayNumber}
+          <Flex justify="space-between" padding="0 1rem" align="center">
+            <Heading size="md">
+              {currentDate.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </Heading>
+            <Flex gap="0.5rem">
+              <IconButton
+                aria-label="Previous"
+                children={<LuChevronLeft />}
+                size="sm"
+                variant="ghost"
+                onClick={() => scrollToDate('left')}
+              />
+              <IconButton
+                aria-label="Next"
+                children={<LuChevronRight />}
+                size="sm"
+                variant="ghost"
+                onClick={() => scrollToDate('right')}
+              />
+            </Flex>
+          </Flex>
+
+          <Flex
+            ref={scrollRef}
+            gap={2}
+            overflowX="auto"
+            pb={2}
+            pt={2}
+            css={{
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {dates.map((dateItem, index) => (
+              <Button
+                key={index}
+                onClick={() => handleDateClick(dateItem.date)}
+                flexShrink={0}
+                w="fit-content"
+                h="80px"
+                position="relative"
+                variant="ghost"
+                padding="0"
+                transition="all 0.2s"
+              >
+                <Stack gap="0">
+                  <Text fontSize="x-small" fontWeight="medium" opacity={0.7}>
+                    {dateItem.day}
                   </Text>
-                </Box>
-                {getAgendaItems(dateItem.date).length > 0 && (
-                  <Float placement="bottom-center">
-                    <Circle size="2" bg="red" />
-                  </Float>
-                )}
-              </Stack>
-            </Button>
-          ))}
-        </Flex>
+                  <Box
+                    borderRadius="full"
+                    backgroundColor={dateItem.isSelected ? 'gray.900' : 'white'}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    transition="all 0.2s"
+                    p="1"
+                    h="40px"
+                    w="40px"
+                  >
+                    <Text
+                      fontSize="lg"
+                      color={dateItem.isSelected ? 'white' : 'black'}
+                    >
+                      {dateItem.dayNumber}
+                    </Text>
+                  </Box>
+                  {getAgendaItems(dateItem.date).length > 0 && (
+                    <Float placement="bottom-center">
+                      <Circle size="2" bg="red" />
+                    </Float>
+                  )}
+                </Stack>
+              </Button>
+            ))}
+          </Flex>
+        </Box>
       </Box>
-      <Agenda selectedDate={currentDate} items={agendaItems} />
+      <Stack
+        pt={`${(boxRef.current?.getBoundingClientRect().height || 0) - 40}px`}
+      >
+        <Agenda selectedDate={currentDate} items={agendaItems} />
+      </Stack>
     </Stack>
   );
 };

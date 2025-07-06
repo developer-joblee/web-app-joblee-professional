@@ -38,9 +38,8 @@ const useMediaQuery = () => {
 };
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { user, path } = useGlobal();
+  const { user, path, currentTab, setCurrentTab } = useGlobal();
   const [opened, setOpened] = useState(false);
-  const [currentTab, setCurrentTab] = useState<TabsProps>('home');
   const [openedDrawer, setOpenedDrawer] = useState(false);
   const isDesktop = useMediaQuery();
 

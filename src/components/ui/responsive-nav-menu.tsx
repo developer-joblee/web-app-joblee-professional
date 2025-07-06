@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { defaultColor } from '@/theme';
 import { Box, Button, Stack, Text } from '@chakra-ui/react';
@@ -6,6 +7,8 @@ import { Wallet } from '@/assets/icons/wallet.tsx';
 import { User } from '@/assets/icons/user.tsx';
 import { House } from '@/assets/icons/house.tsx';
 import { useNavigate } from 'react-router-dom';
+import { useGlobal } from '@/hooks/useGlobal';
+import { useEffect } from 'react';
 
 export type TabsProps = 'home' | 'calendar' | 'wallet' | 'profile';
 
@@ -51,7 +54,15 @@ export const ResponsiveNavMenu = ({
   currentTab,
   onChangeTab,
 }: ResponsiveNavMenuProps) => {
+  const { path } = useGlobal();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (tabs.find((item) => item.value === path.split('/').pop())) {
+      const tab = path.split('/').pop() as TabsProps;
+      onChangeTab(tab);
+    }
+  }, [path]);
 
   return (
     <Stack
@@ -78,6 +89,9 @@ export const ResponsiveNavMenu = ({
             onChangeTab(tab.value);
             if (tab.value === 'home') {
               navigate('/');
+            }
+            if (tab.value === 'wallet') {
+              navigate('/wallet');
             }
             if (tab.value === 'calendar') {
               navigate('/calendar');

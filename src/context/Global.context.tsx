@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { ModalProps } from '@/components/ui/modal';
 import React, { useEffect, useState } from 'react';
@@ -56,6 +57,15 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
+  const handleError = (error: any) => {
+    console.error(error);
+    const errorObject = JSON.parse(JSON.stringify(error));
+    if (errorObject.name === 'UserUnAuthenticatedException') {
+      navigate('/login');
+    }
+    setGlobalError(true);
+  };
+
   const fetchUser = async (path?: string) => {
     if (publicPaths.includes(pathname)) return;
 
@@ -74,7 +84,7 @@ export const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       const isProfileCompleted = Boolean(data?.content?.isProfileCompleted);
       navigate(isProfileCompleted ? '/' : '/onboarding');
     } catch (error) {
-      console.log(error);
+      handleError(error);
       setGlobalError(true);
     } finally {
       setGlobalLoading(false);

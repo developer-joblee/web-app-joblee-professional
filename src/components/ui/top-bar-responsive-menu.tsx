@@ -90,7 +90,7 @@ export const TopBarResponsiveMenu = ({
       <Stack
         paddingBottom="4rem"
         paddingTop="3.5rem"
-        padding={hideHeader ? '1rem 1rem 5rem 1rem' : '3.5rem 1rem 5rem 1rem'}
+        padding={hideHeader ? '1rem 0 5rem 0' : '3.5rem 1rem 5rem 1rem'}
       >
         {children}
       </Stack>

@@ -1,5 +1,5 @@
-import { Box, Button, Stack, Text } from '@chakra-ui/react';
-import { LuArrowRight } from 'react-icons/lu';
+import { Box, Flex, Grid, Stack, Text } from '@chakra-ui/react';
+import { LuMoveDownLeft, LuMoveUpRight } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom';
 
 export const WithdrawResponsible = () => {
@@ -10,29 +10,31 @@ export const WithdrawResponsible = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      gap="1rem"
-      padding="1rem"
-      borderRadius="md"
-      backgroundColor="gray.100"
-      onClick={handleClick}
-    >
-      <Stack gap="0">
-        <Text fontSize="x-small" color="gray.500">
-          Saldo disponível
-        </Text>
-        <Text fontSize="lg" fontWeight="bold" color="gray.900">
-          R$ 935,40
-        </Text>
-      </Stack>
-      <Stack gap="0">
-        <Button variant="outline" size="xs">
-          Carteira <LuArrowRight />
-        </Button>
-      </Stack>
+    <Box backgroundColor="gray.100" borderRadius="md" onClick={handleClick}>
+      <Grid templateColumns="1fr 1fr">
+        <Stack gap="0" p="1rem" alignItems="center">
+          <Flex alignItems="center" gap="0.25rem">
+            <LuMoveDownLeft color="green" />
+            <Text fontSize="xs" color="gray.500">
+              Saldo Disponível
+            </Text>
+          </Flex>
+          <Text fontSize="lg" fontWeight="bold">
+            R$ 935,40
+          </Text>
+        </Stack>
+        <Stack gap="0" p="1rem" alignItems="center">
+          <Flex alignItems="center" gap="0.25rem">
+            <LuMoveUpRight color="blueviolet" />
+            <Text fontSize="xs" color="gray.500">
+              Saldo a Receber
+            </Text>
+          </Flex>
+          <Text fontSize="lg" fontWeight="bold">
+            R$ 0,00
+          </Text>
+        </Stack>
+      </Grid>
     </Box>
   );
 };

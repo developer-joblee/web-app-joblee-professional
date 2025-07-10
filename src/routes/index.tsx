@@ -156,6 +156,11 @@ export const AppRoutes = () => {
         </div>
       )} */}
 
+      <Route
+        path="/.well-known/assetlinks.json"
+        element={<Navigate to="/.well-known/assetlinks.json" replace />}
+      />
+
       <Routes>
         {publicRoutes.map((route) => (
           <Route

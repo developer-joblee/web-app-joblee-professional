@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "br.com.joblee.parceiro.twa",
+      "sha256_cert_fingerprints": [
+        "1F:37:29:44:A1:3D:C5:E8:A4:D8:25:29:93:59:1C:6C:77:7A:83:C2:BB:54:51:6D:49:58:42:01:2E:61:8C:83"
+      ]
+    }
+  }
+]

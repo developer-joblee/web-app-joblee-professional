@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { LuCopy } from 'react-icons/lu';
 
-export const OrderCard = () => {
+export const OrderCard = ({ map }: { map: string }) => {
   return (
     <Card.Root width="100%">
       <Card.Body gap="2" padding="1rem">
@@ -58,7 +58,7 @@ export const OrderCard = () => {
                 }}
                 loading="lazy"
                 allowFullScreen
-                src="https://maps.google.com/maps?q=-23.4979054,-46.7043622&z=17&output=embed"
+                src={map}
               />
             </EnvironmentProvider>
             <Stack gap="0">

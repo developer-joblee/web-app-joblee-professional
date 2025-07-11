@@ -10,7 +10,15 @@ export const WithdrawResponsible = () => {
   };
 
   return (
-    <Box backgroundColor="gray.100" borderRadius="md" onClick={handleClick}>
+    <Box
+      backgroundColor="gray.100"
+      borderRadius="md"
+      onClick={handleClick}
+      display={{
+        base: 'block',
+        md: 'none',
+      }}
+    >
       <Grid templateColumns="1fr 1fr">
         <Stack gap="0" p="1rem" alignItems="center">
           <Flex alignItems="center" gap="0.25rem">

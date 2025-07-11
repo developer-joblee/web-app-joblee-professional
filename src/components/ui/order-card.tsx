@@ -9,7 +9,7 @@ import {
   Separator,
   EnvironmentProvider,
 } from '@chakra-ui/react';
-import { LuScanBarcode } from 'react-icons/lu';
+import { LuCopy } from 'react-icons/lu';
 
 export const OrderCard = () => {
   return (
@@ -17,8 +17,8 @@ export const OrderCard = () => {
       <Card.Body gap="2" padding="1rem">
         <Stack>
           <Flex justifyContent="space-between">
-            <Flex alignItems="center" gap="0.25rem">
-              <LuScanBarcode />
+            <Flex alignItems="center" gap="0.25rem" height="1rem">
+              <LuCopy size={16} />
               <Text fontSize="xs">#215-2025</Text>
             </Flex>
 
@@ -34,7 +34,7 @@ export const OrderCard = () => {
                 <Avatar.Image src="" />
               </Avatar.Root>
               <Stack gap="0" alignItems="flex-start">
-                <Text fontSize="x-small" fontWeight="bold" color="gray.500">
+                <Text fontSize="x-small" fontWeight="bold" color="gray.900">
                   Nome do cliente
                 </Text>
                 <Text fontSize="md" fontWeight="bold" color="#333">
@@ -62,7 +62,7 @@ export const OrderCard = () => {
               />
             </EnvironmentProvider>
             <Stack gap="0">
-              <Text fontSize="x-small" fontWeight="bold" color="gray.500">
+              <Text fontSize="x-small" fontWeight="bold" color="gray.900">
                 Endereço
               </Text>
               <Text fontSize="xs" fontWeight="bold" color="#333">
@@ -76,10 +76,11 @@ export const OrderCard = () => {
               </Text>
             </Stack>
           </Grid>
+
           <Separator />
           <Grid templateColumns="1fr 1fr">
             <Stack gap="0" alignItems="flex-start">
-              <Text fontSize="x-small" fontWeight="bold" color="gray.500">
+              <Text fontSize="x-small" fontWeight="bold" color="gray.900">
                 Data agendada
               </Text>
               <Text fontSize="md" fontWeight="bold" color="#333">
@@ -87,7 +88,7 @@ export const OrderCard = () => {
               </Text>
             </Stack>
             <Stack gap="0" alignItems="flex-start">
-              <Text fontSize="x-small" fontWeight="bold" color="gray.500">
+              <Text fontSize="x-small" fontWeight="bold" color="gray.900">
                 Horário agendado
               </Text>
               <Text fontSize="md" fontWeight="bold" color="#333">
